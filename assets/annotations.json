@@ -1,32 +1,33 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "type": "object",
-  "properties": {
-    "pii": {
-      "type": "object",
-      "properties": {
-        "tokenize": {
-          "type": "string",
-          "enum": ["sha256_tokenizer"]
-        },
-        "obfuscate": {
-          "type": "string",
-          "enum": ["email_obfuscator", "phone_obfuscator", "ip_obfuscator", "geo_obfuscator", "name_obfuscator", "null_obfuscator"]
-        }
-      },
-      "oneOf": [
-          {
-            "required": [
-                "tokenize"
-            ]
-        },
-        {
-            "required": [
-                "obfuscate"
-            ]
-        }
-      ],
-      "additionalProperties": false
+  "email": {
+    "comment": {
+      "pii": {"obfuscate": "email_obfuscator"}
+    }
+  },
+  "phone": {
+    "comment": {
+      "pii": {"obfuscate": "phone_obfuscator"}
+    }
+  },
+  "ip_address": {
+    "comment": {
+      "pii": {"obfuscate": "ip_obfuscator"}  
+    }
+  },
+  "latitude": {
+    "comment": {
+      "pii": {"obfuscate": "geo_obfuscator"}
+    }
+  },
+  "longitude": {
+    "comment": {
+      "pii": {"obfuscate": "geo_obfuscator"}
+    }
+  },
+  "name": {
+    "comment": {
+      "pii": {"obfuscate": "name_obfuscator"}
     }
   }
+
 }
