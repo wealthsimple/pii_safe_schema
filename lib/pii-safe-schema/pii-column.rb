@@ -4,21 +4,32 @@ class PiiSafeSchema::PiiColumn
 
   class << self
     def all
+      @all ||= find_and_create
     end
 
     def find_and_create
-      relevant_tables.each do |table|
-
+      relevant_tables.map do |table|
+        connection.columns(table).each do |column|
+          rec = PiiSafeSchema::Annotations.recommended_comment(column)
+          new(table: table, column: colummn, suggestion: rec) if rec
+        end
       end
     end
   end
 
   def initialize(table:, column:, suggestion:)
+    @table = table
+    @column = column
+    @suggestion = suggestion
   end
 
 
   private
+    def self.connection
+      ActiveRecord::Base.connection
+    end
+
     def self.relevant_tables
-      ActiveRecord::Base.connection.tables - INGORE_TABLES
+      connection.tables - INGORE_TABLES
     end
 end
