@@ -1,4 +1,5 @@
 class PiiSafeSchema::PiiColumn
+  extend PiiSafeSchema::Annotations
   INGORE_TABLES = ["schema_migrations", "ar_internal_metadata"].freeze
   attr_reader :table, :column, :suggestion
 
@@ -9,11 +10,11 @@ class PiiSafeSchema::PiiColumn
 
     def find_and_create
       relevant_tables.map do |table|
-        connection.columns(table).each do |column|
-          rec = PiiSafeSchema::Annotations.recommended_comment(column)
-          new(table: table, column: colummn, suggestion: rec) if rec
-        end
-      end
+        connection.columns(table).map do |column|
+          rec = recommended_comment(column)
+          rec ? new(table: table, column: column, suggestion: rec) : nil
+        end.compact
+      end.compact.flatten
     end
   end
 

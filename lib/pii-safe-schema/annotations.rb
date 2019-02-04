@@ -22,23 +22,25 @@ module PiiSafeSchema::Annotations
       comment: {
         pii: { obfuscate: "geo_obfuscator" }
       },
-      regexp: /lat|long/
+      regexp: /latitude|longitude/
     },
     name: {
       comment: {
         pii: { obfuscate: "name_obfuscator" }
-      }
+      },
+      regexp: /name/
     }
   }.freeze
 
   def recommended_comment(column)
-    COLUMNS.each do |pii_type|
-      return pii_type[:comment] if apply_recommendation?(column, pii)
+    COLUMNS.each do |type, info|
+      return info[:comment] if apply_recommendation?(column, info)
     end
+    nil
   end
 
-  def apply_recommendation?(column, pii_type)
-    pii_type[:regexp].match(column.name) && 
-      comment.column != pii_type[:comment].to_json
+  def apply_recommendation?(column, pii_info)
+    pii_info[:regexp].match(column.name) && 
+      column.comment != pii_info[:comment].to_json
   end
 end
