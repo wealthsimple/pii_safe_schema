@@ -8,7 +8,7 @@ require 'pry'
 module PiiSafeSchema
   def self.activate!
     ActiveSupport.on_load :active_record do
-      PiiSafeSchema::Schema.instance.hash
+      PiiSafeSchema::Notify.notify_all(PiiSafeSchema::PiiColumns.all)
     end
   end
 end
