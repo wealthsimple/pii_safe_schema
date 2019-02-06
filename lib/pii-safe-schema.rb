@@ -6,6 +6,7 @@ require 'pii-safe-schema/version'
 require 'pii-safe-schema/notifiers/std_out'
 require 'pii-safe-schema/paths'
 require 'pii-safe-schema/railtie'
+require 'rails/generators' if defined?(Rails)
 require 'rails/generators/active_record/migration/migration_generator' if defined?(Rails)
 require 'pii-safe-schema/migration-generator'
 require 'json'
@@ -18,7 +19,7 @@ module PiiSafeSchema
   end
 
   def self.configuration
-    @config ||= Config.new
+    @config ||= Configuration.new
   end
 
   def self.configure

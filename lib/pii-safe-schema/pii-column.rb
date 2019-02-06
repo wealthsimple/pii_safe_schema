@@ -18,7 +18,7 @@ class PiiSafeSchema::PiiColumn
   end
 
   def initialize(table:, column:, suggestion:)
-    @table = table
+    @table = table.to_sym
     @column = column
     return nil if ignored_column?
     @suggestion = suggestion
@@ -31,10 +31,10 @@ class PiiSafeSchema::PiiColumn
     end
 
     def self.relevant_tables
-      connection.tables - Configuration.ignore_tables
+      connection.tables - PiiSafeSchema.configuration.ignore_tables
     end
 
-    def self.ignored_column?
-      Config.ignore_columns[table]&.[](column.name.to_sym)
+    def ignored_column?
+      PiiSafeSchema.configuration.ignore_columns[table]&.[](column.name.to_sym)&.present?
     end
 end

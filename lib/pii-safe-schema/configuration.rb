@@ -1,11 +1,10 @@
 class PiiSafeSchema::Configuration
-  attr_accessor :ignore, :ignore_columns,
+  attr_accessor :ignore
 
   def initialize
     @ignore = {
       schema_migrations: :*,
-      ar_internal_metadata: :*,
-      known_devices: [:hi, :bye]
+      ar_internal_metadata: :*
     }
   end
 
