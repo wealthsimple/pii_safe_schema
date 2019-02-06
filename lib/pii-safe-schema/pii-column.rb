@@ -1,6 +1,5 @@
 class PiiSafeSchema::PiiColumn
   extend PiiSafeSchema::Annotations
-  INGORE_TABLES = ["schema_migrations", "ar_internal_metadata"].freeze
   attr_reader :table, :column, :suggestion
 
   class << self
@@ -21,6 +20,7 @@ class PiiSafeSchema::PiiColumn
   def initialize(table:, column:, suggestion:)
     @table = table
     @column = column
+    return nil if ignored_column?
     @suggestion = suggestion
   end
 
@@ -31,6 +31,10 @@ class PiiSafeSchema::PiiColumn
     end
 
     def self.relevant_tables
-      connection.tables - INGORE_TABLES
+      connection.tables - Configuration.ignore_tables
+    end
+
+    def self.ignored_column?
+      Config.ignore_columns[table]&.[](column.name.to_sym)
     end
 end
