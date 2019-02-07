@@ -9,10 +9,10 @@ class PiiSafeSchema::Configuration
   end
 
   def ignore_tables
-    @ignore_tables ||= ignore.select { |k,v| v.to_s == "*" }.keys
+    ignore.select { |k,v| v.to_s == "*" }.keys.map(&:to_s)
   end
 
   def ignore_columns
-    @ignore_columns ||= ignore.select { |k,v| v.is_a?(Array) }
+    ignore.select { |k,v| v.is_a?(Array) }
   end
 end

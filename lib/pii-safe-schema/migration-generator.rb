@@ -10,7 +10,7 @@ module PiiSafeSchema::MigrationGenerator
       generator = ActiveRecord::Generators::MigrationGenerator.new(["change_comments_in_#{table}"])
       
       generated_lines = columns.map do |c|
-        "#{' '*4}change_column :#{table}, :#{c.column.name}, :#{c.column.type}, comment: \`#{c.suggestion.to_json}\'"
+        "#{' '*4}change_column :#{table}, :#{c.column.name}, :#{c.column.type}, comment: \'#{c.suggestion.to_json}\'"
       end
 
       migration_file = generator.create_migration_file
