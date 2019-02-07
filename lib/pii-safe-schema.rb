@@ -4,10 +4,9 @@ require 'pii_safe_schema/notify'
 require 'pii_safe_schema/pii_column'
 require 'pii_safe_schema/version'
 require 'pii_safe_schema/notifiers/std_out'
-require 'pii_safe_schema/paths'
 require 'pii_safe_schema/railtie'
-require 'rails/generators' if defined?(Rails)
-require 'rails/generators/active_record/migration/migration_generator' if defined?(Rails)
+require 'rails/generators'
+require 'rails/generators/active_record/migration/migration_generator'
 require 'pii_safe_schema/migration_generator'
 require 'json'
 require 'pry'

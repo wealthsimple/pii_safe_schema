@@ -3,7 +3,7 @@ class PiiSafeSchema::PiiColumn
   attr_reader :table, :column, :suggestion
 
   def self.all
-    @all ||= find_and_create
+    find_and_create
   end
 
   def initialize(table:, column:, suggestion:)
