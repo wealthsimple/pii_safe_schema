@@ -1,0 +1,136 @@
+AllCops:
+  DisplayCopNames: true
+
+  Exclude:
+    - 'vendor/**/*'
+    - 'log/**/*'
+    - 'public/**/*'
+    - 'data/**/*'
+    - 'tmp/**/*'
+    - 'bin/**/*'
+    - 'db/**/*'
+    - 'lib/tasks/circle_0.rake' # Ignore circleci code:
+  TargetRubyVersion: 2.3
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Lint/IneffectiveAccessModifier:
+  Enabled: false
+
+Lint/UselessAccessModifier:
+  Enabled: false
+
+FrozenStringLiteralComment:
+  Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/LineLength:
+  Enabled: false
+  Max: 120
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+Metrics/ParameterLists:
+  Enabled: false
+
+Style/For:
+  EnforcedStyle: each
+
+Style/HashSyntax:
+  EnforcedStyle: ruby19
+
+Layout/ExtraSpacing:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Layout/TrailingBlankLines:
+  EnforcedStyle: final_newline
+
+Naming/VariableName:
+  EnforcedStyle: snake_case
+
+Style/MethodDefParentheses:
+  EnforcedStyle: require_parentheses
+
+Style/Semicolon:
+  AllowAsExpressionSeparator: false
+
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: comma
+
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: comma
+
+Style/Alias:
+  EnforcedStyle: prefer_alias_method
+
+Style/AndOr:
+  EnforcedStyle: conditionals
+
+Style/CollectionMethods:
+  PreferredMethods:
+    collect: 'map'
+    collect!: 'map!'
+    inject: 'reduce'
+    detect: 'find'
+    find_all: 'select'
+
+Layout/SpaceBeforeFirstArg:
+  Enabled: false
+
+Style/ClassVars:
+  Enabled: false
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+Layout/DotPosition:
+  EnforcedStyle: trailing
+
+Style/NumericPredicate:
+  EnforcedStyle: comparison
+
+Layout/IndentHash:
+  EnforcedStyle: consistent
+
+Lint/AmbiguousBlockAssociation:
+  Enabled: false
+
+Style/TrailingCommaInArguments:
+  EnforcedStyleForMultiline: comma
+
+Style/BracesAroundHashParameters:
+  Enabled: false
+
+Style/Lambda:
+  Enabled: false
+
+Style/SingleLineBlockParams:
+  Enabled: false
+
+Style/GuardClause:
+  Enabled: false
+
+Style/DoubleNegation:
+  Enabled: false
+
+Naming/UncommunicativeMethodParamName:
+  Enabled: false
