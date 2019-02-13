@@ -9,11 +9,7 @@ module PiiSafeSchema::MigrationGenerator
 
   def self.generate_migration_for(table, columns)
     generator = ActiveRecord::Generators::MigrationGenerator.new(["change_comments_in_#{table}"])
-    # generator.destination_root = ENV["DESTINATION_ROOT"] if ENV["DESTINATION_ROOT"]
-    generated_lines = columns.map do |c|
-      "#{' ' * 4}change_column :#{table}, :#{c.column.name}, :#{c.column.type}, comment: \'#{c.suggestion.to_json}\'"
-    end
-
+    generated_lines = generate_migration_lines(table, columns)
     migration_file = generator.create_migration_file
     file_lines = File.open(migration_file, 'r').read.split("\n")
     change_line = file_lines.find_index { |i| /def change/.match(i) }
@@ -23,5 +19,15 @@ module PiiSafeSchema::MigrationGenerator
       f.write(new_contents.join("\n"))
     end
     migration_file
+  end
+
+  def self.generate_migration_lines(table, columns)
+    safety_assured = defined?(StrongMigrations)
+    columns.map do |c|
+      "    #{'safety_assured {' if safety_assured}"\
+      "change_column :#{table}, :#{c.column.name}, :#{c.column.type}, "\
+      "comment: \'#{c.suggestion.to_json}\'"\
+      "#{'}' if safety_assured}"
+    end
   end
 end

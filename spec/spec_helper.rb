@@ -8,7 +8,6 @@ require 'rspec/collection_matchers'
 require 'rspec/its'
 require 'active_record'
 require 'sample_migrations'
-
 ActiveRecord::Base.establish_connection('postgres://localhost/pii_safe_schema_test')
 ActiveRecord::Base.logger = ActiveSupport::Logger.new($stdout) if ENV['VERBOSE']
 
@@ -41,7 +40,7 @@ RSpec.configure do |config|
     clean_db
   end
 
-  config.after(:each) do 
+  config.after(:each) do
     remove_migration_files
   end
 end
