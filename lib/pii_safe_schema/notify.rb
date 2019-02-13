@@ -1,5 +1,5 @@
 module PiiSafeSchema::Notify
-  METHODS = ['StdOut'].freeze
+  METHODS = %i[StdOut DataDog].freeze
   def self.notify(column_or_columns)
     column_or_columns.each { |c| deliver(c) } if column_or_columns.is_a?(Array)
     deliver(c) if column_or_columns.is_a?(PiiSafeSchema::PiiColumn)
