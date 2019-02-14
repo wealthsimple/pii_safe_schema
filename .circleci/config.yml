@@ -3,7 +3,11 @@ version: 2
 defaults: &defaults
   working_directory: /home/circleci/wealthsimple
   docker:
-    - image: circleci/ruby:2.4.5
+    - image: circleci/ruby:2.6.0
+    - image: circleci/postgres:9.5.9-alpine
+      environment:
+        POSTGRES_USER: circleci
+        POSTGRES_DB: pii_safe_schema_test
 
 # These are common snippets that are referenced in multiple workflows.
 references:
@@ -32,6 +36,8 @@ jobs:
     steps:
       - *attach_code_workspace
       - *restore_bundle_dependencies
+      - run:
+          command: sudo apt install -y postgresql-client || true
       - run:
           command: bundle exec bundle-audit update && bundle exec bundle-audit check
       - run:

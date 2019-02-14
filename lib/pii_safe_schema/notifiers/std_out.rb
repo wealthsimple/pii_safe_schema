@@ -14,7 +14,7 @@ module PiiSafeSchema
             ------------------------------------------------------------------------------------
             Annotation recommended on column:
             #{pii_column.table}.#{pii_column.column.name}: comment: \"#{pii_column.suggestion}\"
-            
+
             run `rake pii_safe_schema:generate_migrations`
             to generate all necessary annotation migrations.
 
