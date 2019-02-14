@@ -10,9 +10,9 @@ describe PiiSafeSchema::Notify do
     end
   end
 
-  describe 'staging' do
+  describe 'production' do
     before do
-      Rails.env = 'staging'
+      Rails.env = 'production'
     end
 
     it 'send warnings to datadog' do
