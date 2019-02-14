@@ -1,4 +1,3 @@
-require 'spec_helper'
 describe PiiSafeSchema::MigrationGenerator do
   before do
     PiiSafeSchema.configure do |config|

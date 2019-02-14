@@ -1,4 +1,3 @@
-require 'spec_helper'
 describe PiiSafeSchema::PiiColumn do
   let(:annotations) { PiiSafeSchema::Annotations::COLUMNS }
   describe '#all' do

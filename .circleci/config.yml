@@ -1,0 +1,102 @@
+version: 2
+
+defaults: &defaults
+  working_directory: /home/circleci/wealthsimple
+  docker:
+    - image: circleci/ruby:2.4.5
+
+# These are common snippets that are referenced in multiple workflows.
+references:
+  attach_code_workspace: &attach_code_workspace
+    attach_workspace:
+      at: /home/circleci/wealthsimple
+
+  restore_bundle_dependencies: &restore_bundle_dependencies
+    run:
+      name: Restore bundle dependencies from workspace
+      command: bundle --path vendor/bundle
+
+jobs:
+  checkout_and_bundle:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          command: bundle install --jobs=4 --retry=3 --path vendor/bundle
+      - persist_to_workspace:
+          root: .
+          paths: .
+
+  rspec:
+    <<: *defaults
+    steps:
+      - *attach_code_workspace
+      - *restore_bundle_dependencies
+      - run:
+          command: bundle exec bundle-audit update && bundle exec bundle-audit check
+      - run:
+          command: bundle exec rspec
+
+  lint_check:
+    <<: *defaults
+    steps:
+      - *attach_code_workspace
+      - *restore_bundle_dependencies
+      - run:
+          command: bundle exec rubocop
+
+  vulnerability_check:
+    <<: *defaults
+    steps:
+      - *attach_code_workspace
+      - *restore_bundle_dependencies
+      - run:
+          command: bundle exec bundle-audit update && bundle exec bundle-audit check
+
+  release:
+    <<: *defaults
+    steps:
+      - *attach_code_workspace
+      - *restore_bundle_dependencies
+      - run:
+          command: bundle exec rake release
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - checkout_and_bundle:
+          context: wealthsimple
+      - rspec:
+          requires:
+            - checkout_and_bundle
+      - lint_check:
+          requires:
+            - checkout_and_bundle
+      - vulnerability_check:
+          requires:
+            - checkout_and_bundle
+      - release:
+          context: wealthsimple
+          filters:
+            branches:
+              only: master
+          requires:
+          - rspec
+          - lint_check
+          - vulnerability_check
+
+  security-audit:
+    triggers:
+      - schedule:
+          # 11:45 am UTC: 6:45 am EST / 7:45 am EDT
+          cron: "45 11 * * *"
+          filters:
+            branches:
+              only: master
+    jobs:
+      - checkout_and_bundle:
+          context: wealthsimple
+      - vulnerability_check:
+          requires:
+            - checkout_and_bundle

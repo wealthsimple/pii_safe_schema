@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe PiiSafeSchema::Notify do
   let(:columns) { PiiSafeSchema::PiiColumn.all }
 

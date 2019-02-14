@@ -2,13 +2,27 @@ require 'simplecov'
 SimpleCov.start
 require 'bundler/setup'
 Bundler.require(:default)
-require 'pii-safe-schema'
+require 'pii_safe_schema'
 require 'rspec'
 require 'rspec/collection_matchers'
 require 'rspec/its'
 require 'active_record'
 require 'sample_migrations'
 require 'datadog/statsd'
+
+RSpec.configure do |config|
+  # Enable flags like --only-failures and --next-failure
+  config.example_status_persistence_file_path = '.rspec_status'
+
+  # Disable RSpec exposing methods globally on `Module` and `main`
+  config.disable_monkey_patching!
+
+  config.expose_dsl_globally = true
+
+  config.expect_with :rspec do |c|
+    c.syntax = :expect
+  end
+end
 
 ActiveRecord::Base.establish_connection('postgres://localhost/pii_safe_schema_test')
 ActiveRecord::Base.logger = ActiveSupport::Logger.new($stdout) if ENV['VERBOSE']
