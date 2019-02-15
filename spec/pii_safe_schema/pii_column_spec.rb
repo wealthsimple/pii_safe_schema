@@ -62,6 +62,10 @@ describe PiiSafeSchema::PiiColumn do
       refute_column_presence(:addresses, 'city')
     end
 
+    it 'should return the correct annotation type for encrypted columns' do
+      assert_column_presence_and_suggestion(:users, 'encrypted_sin', annotation_type: :encrypted_data)
+    end
+
     it 'should not return ignored columns' do
       PiiSafeSchema.configure do |config|
         config.ignore = { sample_ignore_table: [:phone] }

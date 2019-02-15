@@ -48,7 +48,13 @@ module PiiSafeSchema
         comment: {
           pii: { tokenize: 'sha256_tokenizer' },
         },
-        regexp: /(^|_)(#{SENSITIVE_DATA_NAMES.join("|")})($|_)/,
+        regexp: /^((?!encrypted).)*(#{SENSITIVE_DATA_NAMES.join("|")})(_\w+)?$/,
+      },
+      encrypted_data: {
+        comment: {
+          pii: { obfuscate: 'null_obfuscator' },
+        },
+        regexp: /encrypted/,
       },
     }.freeze
 

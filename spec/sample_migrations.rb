@@ -12,6 +12,7 @@ class CreateTables < TestMigration
       t.float :latitude
       t.float :longitude
       t.string :social_insurance_number
+      t.string :encrypted_sin
       t.string :sin
       t.string :business
     end
