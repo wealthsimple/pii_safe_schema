@@ -10,6 +10,14 @@ describe PiiSafeSchema::PiiColumn do
       assert_column_presence_and_suggestion(:users, 'name')
     end
 
+    it 'should not return users.first_name' do
+      refute_column_presence(:users, 'first_name')
+    end
+
+    it 'should return users.last_name' do
+      assert_column_presence_and_suggestion(:users, 'last_name', annotation_type: :name)
+    end
+
     it 'should return users.email' do
       assert_column_presence_and_suggestion(:users, 'email')
     end
@@ -28,6 +36,11 @@ describe PiiSafeSchema::PiiColumn do
 
     it 'should return users.longitude' do
       assert_column_presence_and_suggestion(:users, 'longitude', annotation_type: :geolocation)
+    end
+
+    it 'should return social_insurance_number' do
+      assert_column_presence_and_suggestion(:users, 'sin', annotation_type: :sensitive_data)
+      assert_column_presence_and_suggestion(:users, 'social_insurance_number', annotation_type: :sensitive_data)
     end
 
     it 'should return sample_ignore_table.phone' do

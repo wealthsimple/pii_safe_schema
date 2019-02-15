@@ -1,5 +1,6 @@
 module PiiSafeSchema
   module Annotations
+    SENSITIVE_DATA_NAMES = %w[sin social_insurance_number ssn social_security_number tin tax_idenfification_number national_insurance_number mifid].freeze
     COLUMNS = {
       email: {
         comment: {
@@ -29,7 +30,13 @@ module PiiSafeSchema
         comment: {
           pii: { obfuscate: 'name_obfuscator' },
         },
-        regexp: /name/,
+        regexp: /(last|sur|full|^)_?(name)/,
+      },
+      sensitive_data: {
+        comment: {
+          pii: { tokenize: 'sha256_tokenizer' },
+        },
+        regexp: /(^|_)(#{SENSITIVE_DATA_NAMES.join("|")})($|_)/,
       },
     }.freeze
 

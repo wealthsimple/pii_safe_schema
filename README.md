@@ -1,3 +1,15 @@
+## PiiSafeSchema
+
+this gem serves a few functions:
+
+* Warning you when you might be missing an annotation on a column
+* auto generating your migrations for you
+* alerting the security team through datadog events if there are remaining unannotated columns
+
+
+
+### Getting Started
+
 `gem 'pii-safe-schema'`
 
 add the following to `application.rb`
@@ -20,6 +32,14 @@ PiiSafeSchema.configure do |config|
   }
 end
 ```
+
+### Generating Comment Migrations
+
+`rake pii_safe_schema:generate_migrations`
+
+this will generate one migration file for each table that should be commented.
+it will create a comment field for each column that it warns you about when you start a rails server or console.
+
 
 
 

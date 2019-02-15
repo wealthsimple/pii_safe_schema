@@ -4,11 +4,16 @@ class CreateTables < TestMigration
   def change
     create_table 'users' do |t|
       t.string :name
+      t.string :first_name
+      t.string :last_name
       t.string :email
       t.string :phone
       t.string :ip_address
       t.float :latitude
       t.float :longitude
+      t.string :social_insurance_number
+      t.string :sin
+      t.string :business
     end
 
     create_table 'schema_migrations' do |t|
