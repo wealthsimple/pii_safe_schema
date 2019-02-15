@@ -19,18 +19,28 @@ module PiiSafeSchema
 
         File.open(migration_file, 'w') do |f|
           f.write(new_contents.join("\n"))
+          f.write("\n")
         end
         migration_file
       end
 
       def generate_migration_lines(table, columns)
-        safety_assured = defined?(StrongMigrations)
-        columns.map do |c|
-          "    #{'safety_assured {' if safety_assured}"\
+        migration_lines = columns.map do |c|
+          "#{' ' * (safety_assured? ? 6 : 4)}"\
           "change_column :#{table}, :#{c.column.name}, :#{c.column.type}, "\
           "comment: \'#{c.suggestion.to_json}\'"\
-          "#{'}' if safety_assured}"
         end
+        wrap_in_safety_assured(migration_lines)
+      end
+
+      def wrap_in_safety_assured(migration_lines)
+        return migration_lines unless safety_assured?
+
+        ["#{' ' * 4}safety_assured do", *migration_lines, "#{' ' * 4}end"]
+      end
+
+      def safety_assured?
+        defined?(StrongMigrations)
       end
     end
   end
