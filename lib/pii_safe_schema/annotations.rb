@@ -26,6 +26,18 @@ module PiiSafeSchema
         },
         regexp: /latitude|longitude/,
       },
+      address: {
+        comment: {
+          pii: { obfuscate: 'null_obfuscator' },
+        },
+        regexp: /(^street|apt|apartment|unit_n)/,
+      },
+      postal_code: {
+        comment: {
+          pii: { obfuscate: 'postal_code_obfuscator' },
+        },
+        regexp: /(postal|zip)_code/,
+      },
       name: {
         comment: {
           pii: { obfuscate: 'name_obfuscator' },

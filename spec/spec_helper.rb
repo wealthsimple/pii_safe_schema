@@ -54,6 +54,7 @@ end
 RSpec.configure do |config|
   config.before(:each) do
     clean_db
+    allow(STDOUT).to receive(:puts)
   end
 
   config.after(:each) do

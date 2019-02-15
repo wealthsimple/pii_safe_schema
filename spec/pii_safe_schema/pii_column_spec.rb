@@ -47,6 +47,21 @@ describe PiiSafeSchema::PiiColumn do
       assert_column_presence_and_suggestion(:sample_ignore_table, 'phone')
     end
 
+    it 'should return street_name, street_number, and unit_number' do
+      assert_column_presence_and_suggestion(:addresses, 'street_number', annotation_type: :address)
+      assert_column_presence_and_suggestion(:addresses, 'street_name', annotation_type: :address)
+      assert_column_presence_and_suggestion(:addresses, 'unit_number', annotation_type: :address)
+    end
+
+    it 'should return postal_code' do
+      assert_column_presence_and_suggestion(:addresses, 'postal_code')
+    end
+
+    it 'should not return country or city' do
+      refute_column_presence(:addresses, 'country')
+      refute_column_presence(:addresses, 'city')
+    end
+
     it 'should not return ignored columns' do
       PiiSafeSchema.configure do |config|
         config.ignore = { sample_ignore_table: [:phone] }

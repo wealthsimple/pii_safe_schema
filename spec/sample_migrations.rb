@@ -16,6 +16,15 @@ class CreateTables < TestMigration
       t.string :business
     end
 
+    create_table 'addresses' do |t|
+      t.string :street_number
+      t.string :street_name
+      t.string :unit_number
+      t.string :city
+      t.string :postal_code
+      t.string :country
+    end
+
     create_table 'schema_migrations' do |t|
       t.string :name
     end
