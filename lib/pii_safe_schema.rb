@@ -10,7 +10,6 @@ require 'rails/generators'
 require 'rails/generators/active_record/migration/migration_generator'
 require 'pii_safe_schema/migration_generator'
 require 'json'
-require 'pry'
 
 module PiiSafeSchema
   extend PiiSafeSchema::Notify
