@@ -28,6 +28,8 @@ module PiiSafeSchema
     ActiveSupport.on_load :active_record do
       Notify.notify(PiiSafeSchema::PiiColumn.all)
     end
+  rescue ActiveRecord::NoDatabaseError
+    puts 'PiiSafeSchema: No DB'.red
   end
 
   def self.generate_migrations

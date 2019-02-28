@@ -18,4 +18,11 @@ describe PiiSafeSchema do
 
     expect(Gem::Version.new(PiiSafeSchema::VERSION)).to be > Gem::Version.new(master_version)
   end
+
+  describe "#activate" do
+    it "should not raise an error if tables do not exist yet" do
+      allow(ActiveRecord::Base).to receive(:connection).and_raise(ActiveRecord::NoDatabaseError)
+      expect{ PiiSafeSchema.activate! }.to_not raise_error
+    end
+  end
 end
