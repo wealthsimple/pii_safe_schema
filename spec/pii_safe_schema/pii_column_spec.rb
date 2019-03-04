@@ -43,6 +43,10 @@ describe PiiSafeSchema::PiiColumn do
       assert_column_presence_and_suggestion(:users, 'social_insurance_number', annotation_type: :sensitive_data)
     end
 
+    it 'should not return business' do
+      refute_column_presence(:users, 'business')
+    end
+
     it 'should return sample_ignore_table.phone' do
       assert_column_presence_and_suggestion(:sample_ignore_table, 'phone')
     end
@@ -55,6 +59,10 @@ describe PiiSafeSchema::PiiColumn do
 
     it 'should return postal_code' do
       assert_column_presence_and_suggestion(:addresses, 'postal_code')
+    end
+
+    it 'should return encrypted_postal_code' do
+      assert_column_presence_and_suggestion(:addresses, 'encrypted_postal_code', annotation_type: :encrypted_data)
     end
 
     it 'should not return country or city' do

@@ -48,7 +48,7 @@ module PiiSafeSchema
         comment: {
           pii: { tokenize: 'sha256_tokenizer' },
         },
-        regexp: /^((?!encrypted).)*(#{SENSITIVE_DATA_NAMES.join("|")})(_\w+)?$/,
+        regexp: /(^|_)(#{SENSITIVE_DATA_NAMES.join("|")})(_|$)/,
       },
       encrypted_data: {
         comment: {
@@ -59,6 +59,8 @@ module PiiSafeSchema
     }.freeze
 
     def recommended_comment(column)
+      return COLUMNS[:encrypted_data][:comment] if apply_encrypted_recommendation?(column)
+
       COLUMNS.each do |_type, info|
         return info[:comment] if apply_recommendation?(column, info)
       end
@@ -66,8 +68,17 @@ module PiiSafeSchema
     end
 
     def apply_recommendation?(column, pii_info)
-      pii_info[:regexp].match(column.name) &&
+      !encrypted?(column) &&
+        pii_info[:regexp].match(column.name) &&
         column.comment != pii_info[:comment].to_json
+    end
+
+    def encrypted?(column)
+      COLUMNS[:encrypted_data][:regexp].match(column.name)
+    end
+
+    def apply_encrypted_recommendation?(column)
+      encrypted?(column) && column.comment != COLUMNS[:encrypted_data][:comment].to_json
     end
   end
 end

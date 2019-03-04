@@ -23,6 +23,7 @@ class CreateTables < TestMigration
       t.string :unit_number
       t.string :city
       t.string :postal_code
+      t.string :encrypted_postal_code
       t.string :country
     end
 
