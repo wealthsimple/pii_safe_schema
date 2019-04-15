@@ -2,11 +2,14 @@ describe PiiSafeSchema::Notify do
   let(:columns) { PiiSafeSchema::PiiColumn.all }
 
   describe 'development' do
-    it 'should print warnings' do
+    it 'prints warnings' do
       columns.each do |c|
-        expect(PiiSafeSchema::Notify::StdOut).to(receive(:deliver).with(c))
+        allow(PiiSafeSchema::Notify::StdOut).to receive(:deliver).with(c)
       end
-      PiiSafeSchema::Notify.notify(columns)
+      described_class.notify(columns)
+      columns.each do |c|
+        expect(PiiSafeSchema::Notify::StdOut).to(have_received(:deliver).with(c))
+      end
     end
   end
 
@@ -17,9 +20,12 @@ describe PiiSafeSchema::Notify do
 
     it 'send warnings to datadog' do
       columns.each do |c|
-        expect(PiiSafeSchema::Notify::DataDog).to(receive(:deliver).with(c))
+        allow(PiiSafeSchema::Notify::DataDog).to(receive(:deliver).with(c))
       end
-      PiiSafeSchema::Notify.notify(columns)
+      described_class.notify(columns)
+      columns.each do |c|
+        expect(PiiSafeSchema::Notify::DataDog).to(have_received(:deliver).with(c))
+      end
     end
   end
 end

@@ -20,9 +20,9 @@ describe PiiSafeSchema do
   end
 
   describe "#activate" do
-    it "should not raise an error if tables do not exist yet" do
+    it "does not raise an error if tables do not exist yet" do
       allow(ActiveRecord::Base).to receive(:connection).and_raise(ActiveRecord::NoDatabaseError)
-      expect{ PiiSafeSchema.activate! }.to_not raise_error
+      expect { described_class.activate! }.not_to raise_error
     end
   end
 end

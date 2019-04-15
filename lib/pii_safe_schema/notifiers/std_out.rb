@@ -4,7 +4,7 @@ module PiiSafeSchema
     module StdOut
       class << self
         def deliver(pii_column)
-          puts message(pii_column).red
+          Rails.logger.info(message(pii_column).red)
         end
 
         private

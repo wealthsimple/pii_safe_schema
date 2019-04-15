@@ -9,13 +9,18 @@ module PiiSafeSchema
 
       private
 
+      # rubocop:disable Metrics/AbcSize
       def generate_migration_for(table, columns)
-        generator = ActiveRecord::Generators::MigrationGenerator.new(["change_comments_in_#{table}"])
+        generator = ActiveRecord::Generators::MigrationGenerator.new(
+          ["change_comments_in_#{table}"],
+        )
         generated_lines = generate_migration_lines(table, columns)
         migration_file = generator.create_migration_file
         file_lines = File.open(migration_file, 'r').read.split("\n")
         change_line = file_lines.find_index { |i| /def change/.match(i) }
-        new_contents = file_lines[0..change_line] + generated_lines + file_lines[change_line + 1..-1]
+        new_contents = file_lines[0..change_line] +
+                       generated_lines +
+                       file_lines[change_line + 1..-1]
 
         File.open(migration_file, 'w') do |f|
           f.write(new_contents.join("\n"))
@@ -23,6 +28,7 @@ module PiiSafeSchema
         end
         migration_file
       end
+      # rubocop:enable Metrics/AbcSize
 
       def generate_migration_lines(table, columns)
         migration_lines = columns.map do |c|

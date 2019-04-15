@@ -4,12 +4,14 @@ describe PiiSafeSchema::MigrationGenerator do
       config.ignore = { sample_ignore_table: :* }
     end
   end
+
   let(:columns) { PiiSafeSchema::PiiColumn.all }
-  let(:generator) { PiiSafeSchema::MigrationGenerator }
+  let(:generator) { described_class }
+
   describe '#generate_migrations' do
     describe 'without strong_migrations' do
-      it 'should add the correct annotations' do
-        -> do
+      it 'adds the correct annotations' do
+        lambda do
           generate_migrations
           run_comment_migrations
           expect(PiiSafeSchema::PiiColumn.all).to(eq([]))
@@ -23,11 +25,11 @@ describe PiiSafeSchema::MigrationGenerator do
         generate_migrations
       end
 
-      it 'should migrate succesfully' do
+      it 'migrates succesfully' do
         run_comment_migrations
       end
 
-      it 'should add the correct annotations' do
+      it 'adds the correct annotations' do
         run_comment_migrations
         expect(PiiSafeSchema::PiiColumn.all).to(eq([]))
       end

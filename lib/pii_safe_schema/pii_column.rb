@@ -37,8 +37,8 @@ module PiiSafeSchema
 
       def ignored_column?(table, column)
         PiiSafeSchema.configuration.
-          ignore_columns[table.to_sym]
-                     &.include?(column.name.to_sym)
+          ignore_columns[table.to_sym]&.
+                     include?(column.name.to_sym)
       end
     end
   end

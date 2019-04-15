@@ -2,7 +2,7 @@ describe PiiSafeSchema::Configuration do
   let(:configuration) { PiiSafeSchema.configuration }
 
   describe 'ignore_tables' do
-    it 'should return ignored tables' do
+    it 'returns ignored tables' do
       PiiSafeSchema.configure do |config|
         config.ignore = { sample_ignore_table: :* }
       end
@@ -12,7 +12,7 @@ describe PiiSafeSchema::Configuration do
       )
     end
 
-    it 'should not tables with specific ignored columns' do
+    it 'does not return tables with specific ignored columns' do
       PiiSafeSchema.configure do |config|
         config.ignore = { sample_ignore_table: [:phone] }
       end
@@ -22,19 +22,19 @@ describe PiiSafeSchema::Configuration do
       )
     end
 
-    it 'should include defaults' do
-      expect(PiiSafeSchema::Configuration.new.ignore_tables).to(
+    it 'includes defaults' do
+      expect(described_class.new.ignore_tables).to(
         eq(%w[schema_migrations ar_internal_metadata]),
       )
     end
   end
 
   describe 'ignore_columns' do
-    it 'should return {} by default' do
-      expect(PiiSafeSchema::Configuration.new.ignore_columns).to(eq({}))
+    it 'returns {} by default' do
+      expect(described_class.new.ignore_columns).to(eq({}))
     end
 
-    it 'should return a hash with {table_name => [column_names]}' do
+    it 'returns a hash with {table_name => [column_names]}' do
       ignore_columns = { sample_ignore_table: [:phone] }
       PiiSafeSchema.configure do |config|
         config.ignore = ignore_columns
@@ -42,11 +42,11 @@ describe PiiSafeSchema::Configuration do
       expect(PiiSafeSchema.configuration.ignore_columns).to(eq(ignore_columns))
     end
 
-    it 'should not return wholly ignored tables' do
+    it 'does not return wholly ignored tables' do
       PiiSafeSchema.configure do |config|
         config.ignore = { sample_ignore_table: :* }
       end
-      expect(PiiSafeSchema.configuration.ignore_columns.keys).to_not(
+      expect(PiiSafeSchema.configuration.ignore_columns.keys).not_to(
         include(:sample_ignore_table),
       )
     end
@@ -54,11 +54,11 @@ describe PiiSafeSchema::Configuration do
 
   describe 'configure' do
     describe 'invalid ignore params' do
-      it 'should reject non-array values other than :*' do
+      it 'rejects non-array values other than :*' do
         assert_raise_config_error({ sample_ignore_table: :phone })
       end
 
-      it 'should reject an array of strings' do
+      it 'rejects an array of strings' do
         assert_raise_config_error({ sample_ignore_table: ['phone'] })
       end
     end

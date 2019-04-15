@@ -23,13 +23,13 @@ module PiiSafeSchema
   end
 
   def self.activate!
-    return if Rails.env == 'test'
+    return if Rails.env.test?
 
     ActiveSupport.on_load :active_record do
       Notify.notify(PiiSafeSchema::PiiColumn.all)
     end
   rescue ActiveRecord::NoDatabaseError
-    puts 'PiiSafeSchema: No DB'.red
+    Rails.logger.info('PiiSafeSchema: No DB'.red)
   end
 
   def self.generate_migrations

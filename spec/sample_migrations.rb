@@ -1,5 +1,6 @@
 TestMigration = ActiveRecord::Migration[ActiveRecord.version.to_s.to_f]
 
+# rubocop:disable Metrics/MethodLength, Metrics/AbcSize
 class CreateTables < TestMigration
   def change
     create_table 'users' do |t|
@@ -40,3 +41,4 @@ class CreateTables < TestMigration
     end
   end
 end
+# rubocop:enable Metrics/MethodLength, Metrics/AbcSize

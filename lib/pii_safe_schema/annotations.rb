@@ -1,6 +1,9 @@
 module PiiSafeSchema
   module Annotations
-    SENSITIVE_DATA_NAMES = %w[sin social_insurance_number ssn social_security_number tin tax_idenfification_number national_insurance_number mifid].freeze
+    SENSITIVE_DATA_NAMES = %w[
+      sin social_insurance_number ssn social_security_number
+      tin tax_idenfification_number national_insurance_number mifid
+    ].freeze
     COLUMNS = {
       email: {
         comment: {

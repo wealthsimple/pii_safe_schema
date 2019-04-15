@@ -26,6 +26,7 @@ end
 
 ActiveRecord::Base.establish_connection('postgres://localhost/pii_safe_schema_test')
 ActiveRecord::Base.logger = ActiveSupport::Logger.new($stdout) if ENV['VERBOSE']
+Rails.logger = ActiveSupport::Logger.new($stdout)
 
 def connection
   @connection ||= ActiveRecord::Base.connection
@@ -52,12 +53,12 @@ def remove_migration_files
 end
 
 RSpec.configure do |config|
-  config.before(:each) do
+  config.before do
     clean_db
-    allow(STDOUT).to receive(:puts)
+    allow(Rails.logger).to receive(:info)
   end
 
-  config.after(:each) do
+  config.after do
     remove_migration_files
   end
 end
