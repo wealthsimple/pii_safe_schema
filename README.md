@@ -10,7 +10,7 @@ this gem serves a few functions:
 
 ### Getting Started
 
-`gem 'pii-safe-schema'`
+`gem 'pii_safe_schema'`
 
 add the following to `application.rb`
 
@@ -23,7 +23,7 @@ end
 if you want to ignore certain columns, add the following initializer:
 
 ```
-# initializers/pii-safe-schema.rb
+# initializers/pii_safe_schema.rb
 
 PiiSafeSchema.configure do |config|
   config.ignore = {

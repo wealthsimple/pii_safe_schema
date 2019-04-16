@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.email         = ['agarrow@wealthsimple.com']
 
   s.summary       = 'Schema migration tool for checking and adding comments on PII columns.'
-  s.homepage      = 'https://github.com/wealthsimple/pii-safe-schema'
+  s.homepage      = 'https://github.com/wealthsimple/pii_safe_schema'
 
   s.files = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})

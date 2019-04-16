@@ -20,7 +20,7 @@ module PiiSafeSchema
 
             if this column does not contain PII, you can ignore it
             in your PiiSafeSchema configs.
-            https://github.com/wealthsimple/pii-safe-schema/blob/master/README.md
+            https://github.com/wealthsimple/pii_safe_schema/blob/master/README.md
             ------------------------------------------------------------------------------------
           HEREDOC
         end
