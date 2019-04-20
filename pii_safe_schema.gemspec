@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'colorize'
   s.add_dependency 'rails', '>= 5'
 
-  s.add_development_dependency 'bundler', '~> 1.16'
+  s.add_development_dependency 'bundler', '>= 1.16'
   s.add_development_dependency 'bundler-audit'
   s.add_development_dependency 'dogstatsd-ruby'
   s.add_development_dependency 'git'
@@ -36,8 +36,9 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rubocop'
   s.add_development_dependency 'simplecov'
   s.add_development_dependency 'ws-style'
+  s.add_development_dependency 'sqlite3-ruby'
 
   # Required by activerecord-safer_migrations
-  s.add_development_dependency 'pg', '~> 0.21'
+  s.add_development_dependency 'pg', '>= 0.21'
   s.add_development_dependency 'strong_migrations'
 end

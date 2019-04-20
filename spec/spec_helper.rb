@@ -24,7 +24,10 @@ RSpec.configure do |config|
   end
 end
 
-ActiveRecord::Base.establish_connection('postgres://localhost/pii_safe_schema_test')
+ActiveRecord::Base.establish_connection(
+  adapter:  'sqlite3',
+  database: 'db/pii_safe_schema_test.sqlite',
+)
 ActiveRecord::Base.logger = ActiveSupport::Logger.new($stdout) if ENV['VERBOSE']
 Rails.logger = ActiveSupport::Logger.new($stdout)
 
