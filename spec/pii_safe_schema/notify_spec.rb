@@ -1,7 +1,7 @@
 describe PiiSafeSchema::Notify do
   let(:columns) { PiiSafeSchema::PiiColumn.all }
 
-  describe 'development' do
+  context 'when development' do
     it 'prints warnings' do
       columns.each do |c|
         allow(PiiSafeSchema::Notify::StdOut).to receive(:deliver).with(c)
@@ -13,7 +13,7 @@ describe PiiSafeSchema::Notify do
     end
   end
 
-  describe 'production' do
+  context 'when production' do
     before do
       Rails.env = 'production'
     end

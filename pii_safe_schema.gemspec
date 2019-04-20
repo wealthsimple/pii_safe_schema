@@ -23,21 +23,23 @@ Gem::Specification.new do |s|
   s.add_dependency 'colorize'
   s.add_dependency 'rails', '>= 5'
 
-  s.add_development_dependency 'bundler', '~> 1.16'
+  s.add_development_dependency 'bundler', '>= 1.16'
   s.add_development_dependency 'bundler-audit'
+  s.add_development_dependency 'coveralls'
   s.add_development_dependency 'dogstatsd-ruby'
   s.add_development_dependency 'git'
   s.add_development_dependency 'guard-rspec'
   s.add_development_dependency 'pry'
-  s.add_development_dependency 'rake', '~> 10.0'
-  s.add_development_dependency 'rspec', '~> 3.0'
+  s.add_development_dependency 'rake', '>= 10.0'
+  s.add_development_dependency 'rspec', '< 4', '>= 3.0'
   s.add_development_dependency 'rspec-collection_matchers'
   s.add_development_dependency 'rspec-its'
   s.add_development_dependency 'rubocop'
   s.add_development_dependency 'simplecov'
+  s.add_development_dependency 'sqlite3-ruby'
   s.add_development_dependency 'ws-style'
 
   # Required by activerecord-safer_migrations
-  s.add_development_dependency 'pg', '~> 0.21'
+  s.add_development_dependency 'pg', '>= 0.21'
   s.add_development_dependency 'strong_migrations'
 end

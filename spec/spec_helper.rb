@@ -1,7 +1,10 @@
+require 'fileutils'
 require 'simplecov'
 SimpleCov.start
 require 'bundler/setup'
 Bundler.require(:default)
+require 'coveralls'
+Coveralls.wear!
 require 'pii_safe_schema'
 require 'rspec'
 require 'rspec/collection_matchers'
@@ -24,7 +27,14 @@ RSpec.configure do |config|
   end
 end
 
-ActiveRecord::Base.establish_connection('postgres://localhost/pii_safe_schema_test')
+if ENV['CIRCLECI']
+  ActiveRecord::Base.establish_connection('postgres://localhost/pii_safe_schema_test')
+else
+  ActiveRecord::Base.establish_connection(
+    adapter:  'sqlite3',
+    database: 'db/pii_safe_schema_test.sqlite',
+  )
+end
 ActiveRecord::Base.logger = ActiveSupport::Logger.new($stdout) if ENV['VERBOSE']
 Rails.logger = ActiveSupport::Logger.new($stdout)
 
@@ -60,6 +70,8 @@ RSpec.configure do |config|
 
   config.after do
     remove_migration_files
+    # reset configuration per tests
+    PiiSafeSchema.reset_configuration!
   end
 end
 
