@@ -35,8 +35,8 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rspec-its'
   s.add_development_dependency 'rubocop'
   s.add_development_dependency 'simplecov'
-  s.add_development_dependency 'ws-style'
   s.add_development_dependency 'sqlite3-ruby'
+  s.add_development_dependency 'ws-style'
 
   # Required by activerecord-safer_migrations
   s.add_development_dependency 'pg', '>= 0.21'

@@ -13,7 +13,7 @@ module PiiSafeSchema
             'PII Annotation Warning',
             message(pii_column),
             msg_title: 'Unannotated PII Column',
-            alert_type: 'warning'
+            alert_type: 'warning',
           )
         end
 

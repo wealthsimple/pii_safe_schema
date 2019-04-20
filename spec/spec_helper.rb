@@ -25,10 +25,14 @@ RSpec.configure do |config|
   end
 end
 
-ActiveRecord::Base.establish_connection(
-  adapter:  'sqlite3',
-  database: 'db/pii_safe_schema_test.sqlite',
-)
+if ENV['CIRCLECI']
+  ActiveRecord::Base.establish_connection('postgres://localhost/pii_safe_schema_test')
+else
+  ActiveRecord::Base.establish_connection(
+    adapter:  'sqlite3',
+    database: 'db/pii_safe_schema_test.sqlite',
+  )
+end
 ActiveRecord::Base.logger = ActiveSupport::Logger.new($stdout) if ENV['VERBOSE']
 Rails.logger = ActiveSupport::Logger.new($stdout)
 
@@ -57,12 +61,12 @@ def remove_migration_files
 end
 
 RSpec.configure do |config|
-  config.before(:each) do
+  config.before do
     clean_db
     allow(Rails.logger).to receive(:info)
   end
 
-  config.after(:each) do
+  config.after do
     remove_migration_files
     # reset configuration per tests
     PiiSafeSchema.reset_configuration!

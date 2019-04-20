@@ -19,7 +19,7 @@ module PiiSafeSchema
   end
 
   def self.reset_configuration!
-    @configuration =  Configuration.new
+    @configuration = Configuration.new
   end
 
   def self.configure

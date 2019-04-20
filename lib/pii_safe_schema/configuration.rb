@@ -58,28 +58,32 @@ module PiiSafeSchema
     end
 
     def raise_config_error(problem)
-      raise ConfigurationError.new(problem)
+      raise ConfigurationError, problem
     end
   end
 
   class ConfigurationError < StandardError
+    IGNORE_MSG = <<~HEREDOC.freeze
+      ignore must be a hash where the values are
+      symbols or arrays of symbols.
+      e.g. ignore = { some_table: :* } ##ignore the whole some_table
+      or   ignore = { some_table: [:some_column, :some_other_column] }
+    HEREDOC
+
+    DD_CLIENT_MSG = <<~HEREDOC.freeze
+      Datadog client must be implement #event(title, text, opts = {})
+
+      Consider using dogstatsd-ruby gem and pass in Datadog::Statsd.new(...)
+      as the client.
+    HEREDOC
+
     def initialize(problem)
       super(
         case problem
         when :ignore
-          <<~HEREDOC
-            ignore must be a hash where the values are
-            symbols or arrays of symbols.
-            e.g. ignore = { some_table: :* } ##ignore the whole some_table
-            or   ignore = { some_table: [:some_column, :some_other_column] }
-          HEREDOC
+          IGNORE_MSG
         when :datadog_client
-          <<~HEREDOC
-            Datadog client must be implement #event(title, text, opts = {})
-
-            Consider using dogstatsd-ruby gem and pass in Datadog::Statsd.new(...)
-            as the client.
-          HEREDOC
+          DD_CLIENT_MSG
         else
           problem
         end
