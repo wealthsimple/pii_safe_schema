@@ -3,6 +3,8 @@ require 'simplecov'
 SimpleCov.start
 require 'bundler/setup'
 Bundler.require(:default)
+require 'coveralls'
+Coveralls.wear!
 require 'pii_safe_schema'
 require 'rspec'
 require 'rspec/collection_matchers'
