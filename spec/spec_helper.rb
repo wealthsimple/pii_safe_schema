@@ -1,3 +1,4 @@
+require 'fileutils'
 require 'simplecov'
 SimpleCov.start
 require 'bundler/setup'
@@ -56,13 +57,15 @@ def remove_migration_files
 end
 
 RSpec.configure do |config|
-  config.before do
+  config.before(:each) do
     clean_db
     allow(Rails.logger).to receive(:info)
   end
 
-  config.after do
+  config.after(:each) do
     remove_migration_files
+    # reset configuration per tests
+    PiiSafeSchema.reset_configuration!
   end
 end
 

@@ -8,6 +8,8 @@ Specifically, this gem serves a few functions:
 * Auto generating your migrations for you
 * Customizable actions through Datadog Events if there are remaining unannotated columns. E.g. alerting your Security Team
 
+![Screenshot of Datadog Event alert](datadog_example.png)
+
 ## Why
 
 Data privacy is an ever increasing concern for users, especially if your project or business is in sensitive industries like healthcare or finance.
@@ -44,6 +46,15 @@ PiiSafeSchema.configure do |config|
     some_table:       :*,                       # ignore the whole table
     some_other_table: [:column_1, :column_2]    # just those columns
   }
+  
+  # Pass whatever instance you want here, but it must implement the method
+  # #event(title, message, opts = {})
+  # which is what datadog-statsd does:
+  config.datadog_client =  Datadog::Statsd.new(
+    Rails.application.secrets.fetch(:datadog_host),
+    Datadog::Statsd::DEFAULT_PORT,
+    # ...
+  )
 end
 ```
 

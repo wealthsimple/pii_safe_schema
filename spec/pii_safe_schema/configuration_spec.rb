@@ -55,20 +55,34 @@ describe PiiSafeSchema::Configuration do
   describe 'configure' do
     describe 'invalid ignore params' do
       it 'rejects non-array values other than :*' do
-        assert_raise_config_error({ sample_ignore_table: :phone })
+        assert_raise_ignore_config_error({ sample_ignore_table: :phone })
       end
 
       it 'rejects an array of strings' do
-        assert_raise_config_error({ sample_ignore_table: ['phone'] })
+        assert_raise_ignore_config_error({ sample_ignore_table: ['phone'] })
+      end
+    end
+
+    describe 'invalid datadog_client' do
+      it 'rejects objects without #event method' do
+        assert_raise_datadog_client_config_error(Object.new)
       end
     end
   end
 
-  def assert_raise_config_error(ignore_value)
+  def assert_raise_ignore_config_error(value)
     expect do
       PiiSafeSchema.configure do |config|
-        config.ignore = ignore_value
+        config.ignore = value
       end
-    end.to raise_error(PiiSafeSchema::ConfigurationError)
+    end.to raise_error(PiiSafeSchema::ConfigurationError, /ignore must be a hash where the values are/)
+  end
+
+  def assert_raise_datadog_client_config_error(client)
+    expect do
+      PiiSafeSchema.configure do |config|
+        config.datadog_client = client
+      end
+    end.to raise_error(PiiSafeSchema::ConfigurationError, /Datadog client must be implement/)
   end
 end
