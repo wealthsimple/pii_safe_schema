@@ -1,28 +1,42 @@
-## PiiSafeSchema
+# PII Safe Schema [![CircleCI](https://circleci.com/gh/wealthsimple/pii_safe_schema.svg?style=svg)](https://circleci.com/gh/wealthsimple/pii_safe_schema)
 
-this gem serves a few functions:
+Schema migration tool for checking and adding comments on *Personally Identifiable Information* (PII) columns in Rails.
+
+Specifically, this gem serves a few functions:
 
 * Warning you when you might be missing an annotation on a column
-* auto generating your migrations for you
-* alerting the security team through datadog events if there are remaining unannotated columns
+* Auto generating your migrations for you
+* Customizable actions through Datadog Events if there are remaining unannotated columns. E.g. alerting your Security Team
 
+## Why
 
+Data privacy is an ever increasing concern for users, especially if your project or business is in sensitive industries like healthcare or finance.
 
-### Getting Started
+Having structured metadata on the database level of your application ensures Business Intelligence consumers (I.e. Periscope Data) can appropriately filter or obfuscate columns that personally identify your users without impacting business needs.
 
-`gem 'pii_safe_schema'`
+In other words, as your attack surface increases, the risk of user PII disclosure remains the same.
 
-add the following to `application.rb`
+In your data warehousing pipeline, consume the structured metadata this gem provides in order to maintain the privacy of your users.
 
+## Getting Started
+
+Add your Rails project Gemfile:
+
+```ruby
+gem 'pii_safe_schema'
 ```
+
+Then, to your `application.rb`
+
+```ruby
 config.after_initialize do
   PiiSafeSchema.activate!
 end
 ```
 
-if you want to ignore certain columns, add the following initializer:
+If you want to ignore certain columns, add the following initializer:
 
-```
+```ruby
 # initializers/pii_safe_schema.rb
 
 PiiSafeSchema.configure do |config|
@@ -33,14 +47,33 @@ PiiSafeSchema.configure do |config|
 end
 ```
 
-### Generating Comment Migrations
+## Generating Comment Migrations
 
-`rake pii_safe_schema:generate_migrations`
+```ruby
+rake pii_safe_schema:generate_migrations
+```
 
-this will generate one migration file for each table that should be commented.
+This will generate one migration file for each table that should be commented.
 it will create a comment field for each column that it warns you about when you start a rails server or console.
 
+## Credits
 
+Thanks to [Alexi Garrow](https://github.com/AGarrow) for the original code.
 
+## Contributing
 
+Everyone is encouraged to help improve this project. Here are a few ways you can help:
 
+* [Report bugs](https://github.com/wealthsimple/pii_safe_schema/issues)
+* Fix bugs and [submit pull requests](https://github.com/wealthsimple/pii_safe_schema/pulls)
+* Write, clarify, or fix documentation
+* Suggest or add new features
+
+To get started with development and testing:
+
+```bash
+git clone https://github.com/wealthsimple/pii_safe_schema.git
+cd pii_safe_schema
+bundle install
+bundle exec rspec
+```
