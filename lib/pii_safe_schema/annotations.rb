@@ -70,6 +70,10 @@ module PiiSafeSchema
       nil
     end
 
+    def self.comment(annotation_type)
+      COLUMNS.dig(annotation_type.to_sym, :comment)
+    end
+
     def apply_recommendation?(column, pii_info)
       !encrypted?(column) &&
         pii_info[:regexp].match(column.name) &&

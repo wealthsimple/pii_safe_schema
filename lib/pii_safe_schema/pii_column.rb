@@ -13,6 +13,14 @@ module PiiSafeSchema
       @suggestion = suggestion
     end
 
+    def self.from_column_name(table:, column:, suggestion:)
+      unless connection.columns(table.to_s).find { |c| c.name == column.to_s }
+        raise InvalidColumnError, "column \"#{column}\" does not exist for table \"#{table}\""
+      end
+
+      new(table: table, column: column, suggestion: suggestion)
+    end
+
     class << self
       private
 
