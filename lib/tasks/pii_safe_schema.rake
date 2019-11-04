@@ -19,7 +19,7 @@ namespace :pii_safe_schema do
 
       Please create the table & columns first, running their migrations, before attempting to use the pii_safe_schema generator.
     HEREDOC
-
+  ensure
     exit(0) # forces rake to stop after this and not assume args are tasks
   end
 end
