@@ -40,7 +40,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'sqlite3'
   s.add_development_dependency 'ws-style'
 
-
   # Required by activerecord-safer_migrations
   s.add_development_dependency 'pg', '>= 0.21'
   s.add_development_dependency 'strong_migrations'

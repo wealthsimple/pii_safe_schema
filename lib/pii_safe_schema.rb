@@ -55,38 +55,38 @@ module PiiSafeSchema
     end
   end
 
-  def self.print_help!(exit: true)
-    puts <<~HELPMSG
-  Usage:
-    rake pii_safe_schema:generate_migrations [table:column:annotation_type] ...
+  def self.print_help!(do_exit: true) # rubocop:disable Metrics/MethodLength
+    puts <<~HELPMSG # rubocop:disable Rails/Output
+      Usage:
+        rake pii_safe_schema:generate_migrations [table:column:annotation_type] ...
 
-  Arguments:
-    [table:column:annotation_type]   # A column to manually annotate. Can be repeated.
-                                     # annotation_type can be "email", "phone", "ip_address",
-                                     # "geolocation", "address", "postal_code", "name",
-                                     # "sensitive_data", or "encrypted_data"
+      Arguments:
+        [table:column:annotation_type]   # A column to manually annotate. Can be repeated.
+                                         # annotation_type can be "email", "phone", "ip_address",
+                                         # "geolocation", "address", "postal_code", "name",
+                                         # "sensitive_data", or "encrypted_data"
 
-  Description:
-    Generates a migration to add PII annotation comments to appropriate columns on a table.
-    Uses a series of regular expressions to find sensitive fields.
+      Description:
+        Generates a migration to add PII annotation comments to appropriate columns on a table.
+        Uses a series of regular expressions to find sensitive fields.
 
-    Optionally supply arguments to annotate columns explicitly
+        Optionally supply arguments to annotate columns explicitly
 
-  Example:
-    rake pii_safe_schema:generate_migrations signatures:signatory_name:name signatures:landline:phone
+      Example:
+        rake pii_safe_schema:generate_migrations signatures:signatory_name:name signatures:landline:phone
 
-    Will generate a migration with the following, assuming automatic regex had no matches:
+        Will generate a migration with the following, assuming automatic regex had no matches:
 
-    class ChangeCommentsInSignatures < ActiveRecord::Migration[5.2]
-      def change
-        safety_assured do
-          change_column :signatures, :signatory_name, :string, comment: '{"pii":{"obfuscate":"name_obfuscator"}}'
-          change_column :signatures, :landline, :string, comment: '{"pii":{"obfuscate":"phone_obfuscator"}}'
+        class ChangeCommentsInSignatures < ActiveRecord::Migration[5.2]
+          def change
+            safety_assured do
+              change_column :signatures, :signatory_name, :string, comment: '{"pii":{"obfuscate":"name_obfuscator"}}'
+              change_column :signatures, :landline, :string, comment: '{"pii":{"obfuscate":"phone_obfuscator"}}'
+            end
+          end
         end
-      end
-    end
     HELPMSG
 
-    exit(1) if exit
+    exit(1) if do_exit # rubocop:disable Rails/Exit
   end
 end
