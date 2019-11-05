@@ -103,6 +103,43 @@ describe PiiSafeSchema::PiiColumn do
     end
   end
 
+  describe '.from_column_name' do
+    subject(:from_column_name) do
+      described_class.from_column_name(table: table, column: column, suggestion: suggestion)
+    end
+
+    let(:table) { 'users' }
+    let(:column) { 'landline' }
+    let(:suggestion) { PiiSafeSchema::Annotations.comment(:phone) }
+
+    it do
+      expect(from_column_name).to have_attributes(
+        table: :users,
+        column: 'landline',
+        suggestion: suggestion,
+      )
+    end
+
+    it { expect(from_column_name).to be_an_instance_of(described_class) }
+
+    context 'when table doesnt exist' do
+      let(:table) { 'banana' }
+
+      it { expect { from_column_name }.to raise_error(ActiveRecord::StatementInvalid) }
+    end
+
+    context 'when column doesnt exist' do
+      let(:column) { 'banana' }
+
+      it do
+        expect { from_column_name }.to raise_error(
+          PiiSafeSchema::InvalidColumnError,
+          'column "banana" does not exist for table "users"',
+        )
+      end
+    end
+  end
+
   def assert_column_presence_and_suggestion(table, column_name, annotation_type: nil)
     annotation_type = annotation_type.presence || column_name.to_sym
     pii_column = find_column(pii_columns, table, column_name)

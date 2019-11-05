@@ -9,6 +9,7 @@ class CreateTables < TestMigration
       t.string :last_name
       t.string :email
       t.string :phone
+      t.string :landline
       t.string :ip_address
       t.float :latitude
       t.float :longitude
