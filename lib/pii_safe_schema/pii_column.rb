@@ -3,10 +3,6 @@ module PiiSafeSchema
     extend PiiSafeSchema::Annotations
     attr_reader :table, :column, :suggestion
 
-    def self.all
-      find_and_create
-    end
-
     def initialize(table:, column:, suggestion:)
       @table = table.to_sym
       @column = column
@@ -14,6 +10,18 @@ module PiiSafeSchema
     end
 
     class << self
+      def all
+        find_and_create
+      end
+
+      def from_column_name(table:, column:, suggestion:)
+        unless connection.columns(table.to_s).find { |c| c.name == column.to_s }
+          raise InvalidColumnError, "column \"#{column}\" does not exist for table \"#{table}\""
+        end
+
+        new(table: table, column: column, suggestion: suggestion)
+      end
+
       private
 
       def find_and_create

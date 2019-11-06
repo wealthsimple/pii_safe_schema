@@ -70,14 +70,18 @@ module PiiSafeSchema
       nil
     end
 
+    def self.comment(annotation_type)
+      COLUMNS.dig(annotation_type.to_sym, :comment)
+    end
+
     def apply_recommendation?(column, pii_info)
       !encrypted?(column) &&
-        pii_info[:regexp].match(column.name) &&
+        pii_info[:regexp].match?(column.name) &&
         column.comment != pii_info[:comment].to_json
     end
 
     def encrypted?(column)
-      COLUMNS[:encrypted_data][:regexp].match(column.name)
+      COLUMNS[:encrypted_data][:regexp].match?(column.name)
     end
 
     def apply_encrypted_recommendation?(column)

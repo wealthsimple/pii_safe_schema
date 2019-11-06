@@ -12,6 +12,7 @@ require 'rspec/its'
 require 'active_record'
 require 'sample_migrations'
 require 'datadog/statsd'
+require 'pry'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -59,7 +60,7 @@ def clean_db
 end
 
 def remove_migration_files
-  FileUtils.rm_rf('db')
+  FileUtils.rm_rf('db/migrate/')
 end
 
 RSpec.configure do |config|

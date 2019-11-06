@@ -46,7 +46,7 @@ PiiSafeSchema.configure do |config|
     some_table:       :*,                       # ignore the whole table
     some_other_table: [:column_1, :column_2]    # just those columns
   }
-  
+
   # Pass whatever instance you want here, but it must implement the method
   # #event(title, message, opts = {})
   # which is what datadog-statsd does:
@@ -60,12 +60,21 @@ end
 
 ## Generating Comment Migrations
 
-```ruby
+```bash
 rake pii_safe_schema:generate_migrations
 ```
 
-This will generate one migration file for each table that should be commented.
-it will create a comment field for each column that it warns you about when you start a rails server or console.
+This will generate one migration file for each table that should be commented. It will create a comment field for each column that it warns you about when you start a rails server or console.
+
+### Explicit annotations
+
+If the generator fails to identify a PII column, you can specify explicitly what columns in what tables are PII. This is particularly useful if you're installed pii_safe_schema into an existing project.
+
+```bash
+rake pii_safe_schema:generate_migrations [table:column:annotation_type] ...
+```
+
+Run `rake pii_safe_schema:generate_migrations help` for details
 
 ## Credits
 
