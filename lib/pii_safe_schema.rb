@@ -46,10 +46,10 @@ module PiiSafeSchema
   def self.parse_additional_columns(arguments)
     arguments.map do |str|
       matches = /([a-z_]+):([a-z_]+):([a-z_]+)/i.match(str)
-      print_help! if matches.blank?
+      return print_help! if matches.blank?
 
       suggestion = Annotations.comment(matches[3])
-      print_help! if suggestion.blank?
+      return print_help! if suggestion.blank?
 
       PiiColumn.from_column_name(table: matches[1], column: matches[2], suggestion: suggestion)
     end
