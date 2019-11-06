@@ -1,7 +1,7 @@
 describe PiiSafeSchema::PiiColumn do
   let(:annotations) { PiiSafeSchema::Annotations::COLUMNS }
 
-  describe '#all' do
+  describe '.all' do
     let(:pii_columns) { described_class.all }
 
     before do
@@ -136,6 +136,176 @@ describe PiiSafeSchema::PiiColumn do
           PiiSafeSchema::InvalidColumnError,
           'column "banana" does not exist for table "users"',
         )
+      end
+    end
+  end
+
+  describe '#recommended_comment' do
+    subject(:recommended_comment) do
+      described_class.recommended_comment(column)
+    end
+
+    let(:column) { instance_double(ActiveRecord::ConnectionAdapters::Column) }
+
+    context 'when encrypted column' do
+      before do
+        allow(described_class).to receive(:apply_encrypted_recommendation?).and_return(true)
+      end
+
+      it { expect(recommended_comment).to eq(pii: { obfuscate: 'null_obfuscator' }) }
+
+      it do
+        recommended_comment
+        expect(described_class).to have_received(:apply_encrypted_recommendation?).with(column)
+      end
+    end
+
+    context 'when recommendable column' do
+      before do
+        allow(described_class).to receive(:apply_encrypted_recommendation?).and_return(false)
+        allow(described_class).to receive(:apply_recommendation?).and_return(true)
+      end
+
+      it { expect(recommended_comment).to eq(pii: { obfuscate: 'email_obfuscator' }) }
+
+      it do
+        _, first_annotation_entry_info = annotations.first
+
+        recommended_comment
+        expect(described_class).to have_received(:apply_recommendation?).with(
+          column,
+          first_annotation_entry_info,
+        )
+      end
+    end
+
+    context 'when regular column' do
+      before do
+        allow(described_class).to receive(:apply_encrypted_recommendation?).and_return(false)
+        allow(described_class).to receive(:apply_recommendation?).and_return(false)
+      end
+
+      it { expect(recommended_comment).to eq(nil) }
+    end
+  end
+
+  describe '#apply_recommendation?' do
+    subject(:apply_recommendation) do
+      described_class.apply_recommendation?(column, pii_info)
+    end
+
+    let(:pii_info) { annotations[:postal_code] }
+    let(:column) do
+      instance_double(
+        ActiveRecord::ConnectionAdapters::Column,
+        name: column_name,
+        comment: 'blaaahhh',
+      )
+    end
+
+    context 'when matching name' do
+      let(:column_name) { 'postal_code' }
+
+      it { expect(apply_recommendation).to eq(true) }
+
+      context 'when contains /encrypted/' do
+        let(:column_name) { 'encrypted_postal_code' }
+
+        it { expect(apply_recommendation).to eq(false) }
+      end
+    end
+
+    context 'when not matching name' do
+      let(:column_name) { 'banana' }
+
+      it { expect(apply_recommendation).to eq(false) }
+    end
+  end
+
+  describe '#encrypted?' do
+    subject(:encrypted) { described_class.encrypted?(column) }
+
+    let(:column) { instance_double(ActiveRecord::ConnectionAdapters::Column, name: column_name) }
+
+    context 'when column name "foobar"' do
+      let(:column_name) { 'foobar' }
+
+      it { expect(encrypted).to eq(false) }
+    end
+
+    context 'when column name "postal_code"' do
+      let(:column_name) { 'postal_code' }
+
+      it { expect(encrypted).to eq(false) }
+    end
+
+    context 'when column name "encrypted"' do
+      let(:column_name) { 'encrypted' }
+
+      it { expect(encrypted).to eq(true) }
+    end
+
+    context 'when column name "encrypted_foobar"' do
+      let(:column_name) { 'encrypted_foobar' }
+
+      it { expect(encrypted).to eq(true) }
+    end
+
+    context 'when column name "foobar_encrypted"' do
+      let(:column_name) { 'foobar_encrypted' }
+
+      it { expect(encrypted).to eq(true) }
+    end
+
+    context 'when column name "foo_encrypted_bar"' do
+      let(:column_name) { 'foo_encrypted_bar' }
+
+      it { expect(encrypted).to eq(true) }
+    end
+  end
+
+  describe '#apply_encrypted_recommendation?' do
+    subject(:apply_encrypted_recommendation) do
+      described_class.apply_encrypted_recommendation?(column)
+    end
+
+    let(:column) do
+      instance_double(
+        ActiveRecord::ConnectionAdapters::Column,
+        comment: column_comment,
+      )
+    end
+    let(:column_comment) { 'foobar' }
+
+    context 'when encrypted? true' do
+      before { allow(described_class).to receive(:encrypted?).and_return(true) }
+
+      it do
+        apply_encrypted_recommendation
+        expect(described_class).to have_received(:encrypted?).with(column)
+      end
+
+      context 'when comment matches' do
+        let(:column_comment) { annotations[:encrypted_data][:comment].to_json }
+
+        it { expect(apply_encrypted_recommendation).to eq(false) }
+      end
+
+      context 'when comment doesnt match' do
+        let(:column_comment) { 'foobar' }
+
+        it { expect(apply_encrypted_recommendation).to eq(true) }
+      end
+    end
+
+    context 'when encrypted? false' do
+      before { allow(described_class).to receive(:encrypted?).and_return(false) }
+
+      it { expect(apply_encrypted_recommendation).to eq(false) }
+
+      it do
+        apply_encrypted_recommendation
+        expect(described_class).to have_received(:encrypted?).with(column)
       end
     end
   end
