@@ -15,11 +15,13 @@ module PiiSafeSchema
       end
 
       def from_column_name(table:, column:, suggestion:)
-        unless connection.columns(table.to_s).find { |c| c.name == column.to_s }
+        activerecord_column = connection.columns(table.to_s).find { |c| c.name == column.to_s }
+
+        unless activerecord_column
           raise InvalidColumnError, "column \"#{column}\" does not exist for table \"#{table}\""
         end
 
-        new(table: table, column: column, suggestion: suggestion)
+        new(table: table, column: activerecord_column, suggestion: suggestion)
       end
 
       private

@@ -115,9 +115,13 @@ describe PiiSafeSchema::PiiColumn do
     it do
       expect(from_column_name).to have_attributes(
         table: :users,
-        column: 'landline',
+        column: be_an_instance_of(ActiveRecord::ConnectionAdapters::Column),
         suggestion: suggestion,
       )
+    end
+
+    it 'finds the correct activerecord column' do
+      expect(from_column_name.column).to have_attributes(name: 'landline')
     end
 
     it { expect(from_column_name).to be_an_instance_of(described_class) }
