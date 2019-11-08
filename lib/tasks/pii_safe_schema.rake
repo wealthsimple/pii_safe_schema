@@ -9,6 +9,7 @@ namespace :pii_safe_schema do
       PiiSafeSchema.generate_migrations(additional_columns)
     end
 
+    exit(0) # forces rake to stop after this and not assume args are tasks
   rescue ActiveRecord::StatementInvalid, PiiSafeSchema::InvalidColumnError => e
     raise e if e.class == ActiveRecord::StatementInvalid && e.cause.class != PG::UndefinedTable
 
@@ -19,7 +20,7 @@ namespace :pii_safe_schema do
 
       Please create the table & columns first, running their migrations, before attempting to use the pii_safe_schema generator.
     HEREDOC
-  ensure
-    exit(0) # forces rake to stop after this and not assume args are tasks
+
+    exit(1) # forces rake to stop after this and not assume args are tasks
   end
 end
