@@ -115,7 +115,7 @@ describe PiiSafeSchema::PiiColumn do
     it do
       expect(from_column_name).to have_attributes(
         table: :users,
-        column: be_an_instance_of(ActiveRecord::ConnectionAdapters::Column),
+        column: be_a_kind_of(ActiveRecord::ConnectionAdapters::Column),
         suggestion: suggestion,
       )
     end
