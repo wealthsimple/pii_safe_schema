@@ -27,11 +27,10 @@ module PiiSafeSchema
     end
 
     def datadog_client
-      @datadog_client ||= begin
-        KNOWN_DD_CLIENTS.each do |client|
-          return client.safe_constantize if defined?(client)
+      @datadog_client ||=
+        KNOWN_DD_CLIENTS.find do |client|
+          client.safe_constantize if defined?(client)
         end
-      end
     end
 
     def ignore_tables
@@ -47,7 +46,7 @@ module PiiSafeSchema
     def validate_ignore(ignore_params)
       raise_config_error(:ignore) unless ignore_params.is_a?(Hash)
 
-      ignore_params.values.each do |ip|
+      ignore_params.each_value do |ip|
         raise_config_error(:ignore) unless valid_column_list?(ip) || ip == :*
       end
       true

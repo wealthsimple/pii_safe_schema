@@ -18,9 +18,7 @@ module PiiSafeSchema
         migration_file = generator.create_migration_file
         file_lines = File.open(migration_file, 'r').read.split("\n")
         change_line = file_lines.find_index { |i| /def change/.match(i) }
-        new_contents = file_lines[0..change_line] +
-                       generated_lines +
-                       file_lines[change_line + 1..-1]
+        new_contents = file_lines[0..change_line] + generated_lines + file_lines[change_line + 1..]
 
         File.open(migration_file, 'w') do |f|
           f.write(new_contents.join("\n"))
