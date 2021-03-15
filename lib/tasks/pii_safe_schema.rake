@@ -11,7 +11,7 @@ namespace :pii_safe_schema do
 
     exit(0) # forces rake to stop after this and not assume args are tasks
   rescue ActiveRecord::StatementInvalid, PiiSafeSchema::InvalidColumnError => e
-    raise e if e.class == ActiveRecord::StatementInvalid && e.cause.class != PG::UndefinedTable
+    raise e if e.instance_of?(ActiveRecord::StatementInvalid) && e.cause.class != PG::UndefinedTable
 
     puts <<~HEREDOC
       Unable to generate PII annotation migration. Either the underlying table or column does not exist:

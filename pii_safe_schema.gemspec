@@ -10,6 +10,8 @@ Gem::Specification.new do |s|
 
   s.summary       = 'Schema migration tool for checking and adding comments on PII columns.'
   s.homepage      = 'https://github.com/wealthsimple/pii_safe_schema'
+  s.license       = "MIT"
+  s.required_ruby_version = Gem::Requirement.new(">= 2.6")
 
   s.files = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})
