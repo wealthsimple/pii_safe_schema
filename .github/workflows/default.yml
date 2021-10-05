@@ -1,0 +1,76 @@
+name: Default
+
+# This workflow runs on all pushes to the repo so we can test changes and provide
+# fast feedback. It also gets run when a pull request is created so that we can
+# run the Sonarqube quality gate (which needs information from the PR). Subsequent
+# pushes to the branch will provide PR information of any open PRs.
+on:
+  push:
+  pull_request:
+    types: [opened, reopened]
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  preflight_check:
+    name: Preflight Check
+    runs-on: ubuntu-latest
+    steps:
+      # Need to fetch all refs, so we can check if the version has been bumped
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+        env:
+          BUNDLE_GEMS__CONTRIBSYS__COM:
+            ${{ secrets.BUNDLE_GEMS__CONTRIBSYS__COM }}
+          BUNDLE_NEXUS__IAD__W10EXTERNAL__COM:
+            ${{ secrets.BUNDLE_NEXUS__IAD__W10EXTERNAL__COM }}
+
+      - name: Lint
+        uses: wealthsimple/toolbox-script@v1
+        with:
+          script: toolbox.ruby.lint.run();
+
+      - name: Test
+        uses: wealthsimple/toolbox-script@v1
+        with:
+          script: toolbox.ruby.test.run();
+
+      - name: Analyze
+        uses: wealthsimple/toolbox-script@v1
+        with:
+          script: toolbox.ruby.analyze.run();
+          sonarqube_host: ${{ secrets.SONAR_HOST_URL }}
+          sonarqube_token: ${{ secrets.SONAR_LOGIN_TOKEN }}
+          github_api_token: ${{ secrets.WOLFBOT_GITHUB_ACTIONS_TOKEN }}
+
+  publish:
+    name: Publish package
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    needs:
+      - preflight_check
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+        env:
+          BUNDLE_GEMS__CONTRIBSYS__COM:
+            ${{ secrets.BUNDLE_GEMS__CONTRIBSYS__COM }}
+          BUNDLE_NEXUS__IAD__W10EXTERNAL__COM:
+            ${{ secrets.BUNDLE_NEXUS__IAD__W10EXTERNAL__COM }}
+
+      - name: Publish
+        uses: wealthsimple/toolbox-script@v1
+        with:
+          script: toolbox.ruby.publish.run();
+          nexus_gem_credentials_file: ${{ secrets.NEXUS_GEM_CREDENTIALS_FILE }}
+
