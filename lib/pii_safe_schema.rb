@@ -55,7 +55,7 @@ module PiiSafeSchema
     end
   end
 
-  def self.print_help!(do_exit: true) # rubocop:disable Metrics/MethodLength
+  def self.print_help!(do_exit: true)
     puts <<~HELPMSG # rubocop:disable Rails/Output
       Usage:
         rake pii_safe_schema:generate_migrations [table:column:annotation_type] ...
