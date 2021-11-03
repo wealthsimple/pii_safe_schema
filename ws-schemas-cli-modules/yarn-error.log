@@ -1,0 +1,36 @@
+Arguments: 
+  /Users/mkuznetsova/.nvm/versions/node/v14.17.6/bin/node /Users/mkuznetsova/.nvm/versions/node/v14.17.6/bin/yarn global add --global-folder ws-schemas-cli-modules @wealthsimple/ws-schemas-cli@^1.7.5
+
+PATH: 
+  /Users/mkuznetsova/.rbenv/shims:/Users/mkuznetsova/.rbenv/bin:/Users/mkuznetsova/.nvm/versions/node/v14.17.6/bin:/usr/local/bin:/Users/mkuznetsova/bin:/usr/local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/mkuznetsova/.fzf/bin:/Users/mkuznetsova/.rvm/bin
+
+Yarn version: 
+  1.22.11
+
+Node version: 
+  14.17.6
+
+Platform: 
+  darwin x64
+
+Trace: 
+  Error: https://registry.yarnpkg.com/@wealthsimple%2fws-schemas-cli: Not found
+      at Request.params.callback [as _callback] (/Users/mkuznetsova/.nvm/versions/node/v14.17.6/lib/node_modules/yarn/lib/cli.js:66992:18)
+      at Request.self.callback (/Users/mkuznetsova/.nvm/versions/node/v14.17.6/lib/node_modules/yarn/lib/cli.js:140763:22)
+      at Request.emit (events.js:400:28)
+      at Request.<anonymous> (/Users/mkuznetsova/.nvm/versions/node/v14.17.6/lib/node_modules/yarn/lib/cli.js:141735:10)
+      at Request.emit (events.js:400:28)
+      at IncomingMessage.<anonymous> (/Users/mkuznetsova/.nvm/versions/node/v14.17.6/lib/node_modules/yarn/lib/cli.js:141657:12)
+      at Object.onceWrapper (events.js:519:28)
+      at IncomingMessage.emit (events.js:412:35)
+      at endReadableNT (internal/streams/readable.js:1317:12)
+      at processTicksAndRejections (internal/process/task_queues.js:82:21)
+
+npm manifest: 
+  No manifest
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
