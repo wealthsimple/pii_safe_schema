@@ -1,4 +1,5 @@
-# PII Safe Schema [![CircleCI](https://circleci.com/gh/wealthsimple/pii_safe_schema.svg?style=svg)](https://circleci.com/gh/wealthsimple/pii_safe_schema) [![Coverage Status](https://coveralls.io/repos/github/wealthsimple/pii_safe_schema/badge.svg?branch=master)](https://coveralls.io/github/wealthsimple/pii_safe_schema?branch=master)
+# PII Safe Schema
+![CI](https://github.com/wealthsimple/pii_safe_schema/actions/workflows/default.yml/badge.svg)
 
 Schema migration tool for checking and adding comments on *Personally Identifiable Information* (PII) columns in Rails.
 
