@@ -42,14 +42,6 @@ jobs:
         with:
           script: toolbox.ruby.test.run();
 
-      - name: Analyze
-        uses: wealthsimple/toolbox-script@v1
-        with:
-          script: toolbox.ruby.analyze.run();
-          sonarqube_host: ${{ secrets.SONAR_HOST_URL }}
-          sonarqube_token: ${{ secrets.SONAR_LOGIN_TOKEN }}
-          github_api_token: ${{ secrets.WOLFBOT_GITHUB_ACTIONS_TOKEN }}
-
   publish:
     name: Publish package
     runs-on: ubuntu-latest
