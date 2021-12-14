@@ -76,7 +76,7 @@ describe PiiSafeSchema::Configuration do
         config.ignore = value
       end
     end.to raise_error(PiiSafeSchema::ConfigurationError,
-                       /ignore must be a hash where the values are/)
+      /ignore must be a hash where the values are/)
   end
 
   def assert_raise_datadog_client_config_error(client)
