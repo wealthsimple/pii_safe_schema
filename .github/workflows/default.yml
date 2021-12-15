@@ -1,0 +1,66 @@
+name: Default
+
+# This workflow runs on all pushes to the repo so we can test changes and provide
+# fast feedback. It also gets run when a pull request is created so that we can
+# run the Sonarqube quality gate (which needs information from the PR). Subsequent
+# pushes to the branch will provide PR information of any open PRs.
+on:
+  push:
+  pull_request:
+    types: [opened, reopened]
+
+concurrency:
+  group: default-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  preflight_check:
+    name: Preflight Check
+    runs-on: ubuntu-latest
+    steps:
+      # Need to fetch all refs, so we can check if the version has been bumped
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Lint
+        uses: wealthsimple/toolbox-script@v1
+        with:
+          script: toolbox.ruby.lint.run();
+
+      - name: Test
+        uses: wealthsimple/toolbox-script@v1
+        with:
+          script: toolbox.ruby.test.run();
+
+  publish:
+    name: Publish package
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    needs:
+      - preflight_check
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Release the gem
+        run: |
+          mkdir -p ~/.gem
+          cat << EOF > ~/.gem/credentials
+          ---
+          :github: Bearer ${GITHUB_TOKEN}
+          :rubygems_api_key: ${RUBYGEMS_API_KEY}
+          EOF
+          chmod 0600 ~/.gem/credentials
+          git config user.email "noreply@wealthsimple.com"
+          git config user.name "Wolfbot"
+          bundle exec rake release
+        env:
+          RUBYGEMS_API_KEY: ${{ secrets.RUBYGEMS_API_KEY }}

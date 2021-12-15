@@ -27,7 +27,6 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'bundler', '>= 1.16'
   s.add_development_dependency 'bundler-audit'
-  s.add_development_dependency 'coveralls'
   s.add_development_dependency 'dogstatsd-ruby'
   s.add_development_dependency 'git'
   s.add_development_dependency 'guard-rspec'

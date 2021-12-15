@@ -1,0 +1,30 @@
+name: Security Check
+
+on:
+  schedule:
+    - cron: '15 11 * * *' # 11:15 am UTC: 6:15 am EST / 7:15 am EDT
+
+concurrency:
+  group: security-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  security_check:
+    name: Security Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+        env:
+          BUNDLE_GEMS__CONTRIBSYS__COM:
+            ${{ secrets.BUNDLE_GEMS__CONTRIBSYS__COM }}
+          BUNDLE_NEXUS__IAD__W10EXTERNAL__COM:
+            ${{ secrets.BUNDLE_NEXUS__IAD__W10EXTERNAL__COM }}
+          BUNDLE_GITHUB__COM:
+            ${{ secrets.WOLFBOT_GITHUB_ACTIONS_TOKEN }}:x-oauth-basic
+      - name: Security Check
+        uses: wealthsimple/toolbox-script@v1
+        with:
+          script: toolbox.ruby.security.run();

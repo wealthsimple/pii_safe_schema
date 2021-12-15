@@ -3,8 +3,6 @@ require 'simplecov'
 SimpleCov.start
 require 'bundler/setup'
 Bundler.require(:default)
-require 'coveralls'
-Coveralls.wear!
 require 'pii_safe_schema'
 require 'rspec'
 require 'rspec/collection_matchers'
@@ -32,7 +30,7 @@ if ENV['CIRCLECI']
   ActiveRecord::Base.establish_connection('postgres://localhost/pii_safe_schema_test')
 else
   ActiveRecord::Base.establish_connection(
-    adapter:  'sqlite3',
+    adapter: 'sqlite3',
     database: 'db/pii_safe_schema_test.sqlite',
   )
 end
