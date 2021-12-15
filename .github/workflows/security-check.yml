@@ -5,7 +5,7 @@ on:
     - cron: '15 11 * * *' # 11:15 am UTC: 6:15 am EST / 7:15 am EDT
 
 concurrency:
-  group: ${{ github.ref }}
+  group: security-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:

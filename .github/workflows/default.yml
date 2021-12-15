@@ -10,7 +10,7 @@ on:
     types: [opened, reopened]
 
 concurrency:
-  group: ${{ github.ref }}
+  group: default-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
