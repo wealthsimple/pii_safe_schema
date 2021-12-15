@@ -26,11 +26,6 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-        env:
-          BUNDLE_GEMS__CONTRIBSYS__COM:
-            ${{ secrets.BUNDLE_GEMS__CONTRIBSYS__COM }}
-          BUNDLE_NEXUS__IAD__W10EXTERNAL__COM:
-            ${{ secrets.BUNDLE_NEXUS__IAD__W10EXTERNAL__COM }}
 
       - name: Lint
         uses: wealthsimple/toolbox-script@v1
@@ -54,15 +49,18 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
+
+      - name: Release the gem
+        run: |
+          mkdir -p ~/.gem
+          cat << EOF > ~/.gem/credentials
+          ---
+          :github: Bearer ${GITHUB_TOKEN}
+          :rubygems_api_key: ${RUBYGEMS_API_KEY}
+          EOF
+          chmod 0600 ~/.gem/credentials
+          git config user.email "noreply@wealthsimple.com"
+          git config user.name "Wolfbot"
+          bundle exec rake release
         env:
-          BUNDLE_GEMS__CONTRIBSYS__COM:
-            ${{ secrets.BUNDLE_GEMS__CONTRIBSYS__COM }}
-          BUNDLE_NEXUS__IAD__W10EXTERNAL__COM:
-            ${{ secrets.BUNDLE_NEXUS__IAD__W10EXTERNAL__COM }}
-
-      - name: Publish
-        uses: wealthsimple/toolbox-script@v1
-        with:
-          script: toolbox.ruby.publish.run();
-          nexus_gem_credentials_file: ${{ secrets.NEXUS_GEM_CREDENTIALS_FILE }}
-
+          RUBYGEMS_API_KEY: ${{ secrets.RUBYGEMS_API_KEY }}
