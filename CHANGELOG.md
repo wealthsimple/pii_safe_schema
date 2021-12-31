@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 1.4.0 - 2021-12-31
+### Changed
+- Add Ruby 3 support
+
 ## 1.3.4 - 2021-10-21
 ### Changed
 - Switched to Github Actions
@@ -40,7 +44,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added MIT License
 
 ## 1.0.4 - 2019-4-16
-### Fixed 
+### Fixed
 - converted any hyphens to underscores for consistency.
 
 ## 1.0.3
