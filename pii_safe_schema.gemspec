@@ -21,9 +21,8 @@ Gem::Specification.new do |s|
   s.executables   = s.files.grep(%r{^exe/}) { |f| File.basename(f) }
   s.require_paths = ['lib']
 
-  s.add_dependency 'activesupport', '>= 5', '< 7'
   s.add_dependency 'colorize'
-  s.add_dependency 'rails', '>= 5', '< 7'
+  s.add_dependency 'rails', '>= 5', '< 8'
 
   s.add_development_dependency 'bundler', '>= 1.16'
   s.add_development_dependency 'bundler-audit'
@@ -31,7 +30,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'git'
   s.add_development_dependency 'guard-rspec'
   s.add_development_dependency 'pry'
-  s.add_development_dependency 'rails', '>= 5.2.3', '< 7'
+  s.add_development_dependency 'rails', '>= 5', '< 8'
   s.add_development_dependency 'rake', '>= 10.0'
   s.add_development_dependency 'rspec', '< 4', '>= 3.0'
   s.add_development_dependency 'rspec-collection_matchers'
