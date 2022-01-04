@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ruby-version: [2.7.5, 3.0.3, 3.1.0]
+        ruby-version: [2.7.5, 3.0.3]
     steps:
       # Need to fetch all refs, so we can check if the version has been bumped
       - uses: actions/checkout@v2
