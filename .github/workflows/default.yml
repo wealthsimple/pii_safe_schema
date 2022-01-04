@@ -17,15 +17,20 @@ jobs:
   preflight_check:
     name: Preflight Check
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ruby-version: [2.7.5, 3.0.3]
     steps:
       # Need to fetch all refs, so we can check if the version has been bumped
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
 
-      - uses: ruby/setup-ruby@v1
+      - name: Set up Ruby ${{ matrix.ruby-version }}
+        uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
+          ruby-version: ${{ matrix.ruby-version }}
 
       - name: Lint
         uses: wealthsimple/toolbox-script@v1
