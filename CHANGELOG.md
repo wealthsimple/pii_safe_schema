@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Switched to Github Actions
 
+## 1.3.4 - 2021-03-15
+### Changed
+- Add support for Rails 7
+
 ## 1.3.3 - 2021-03-15
 ### Changed
 - Pull CI images from ECR repository
@@ -40,7 +44,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added MIT License
 
 ## 1.0.4 - 2019-4-16
-### Fixed 
+### Fixed
 - converted any hyphens to underscores for consistency.
 
 ## 1.0.3
