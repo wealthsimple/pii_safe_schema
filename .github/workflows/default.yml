@@ -6,8 +6,6 @@ name: Default
 # pushes to the branch will provide PR information of any open PRs.
 on:
   push:
-  pull_request:
-    types: [opened, reopened]
 
 concurrency:
   group: default-${{ github.ref }}
