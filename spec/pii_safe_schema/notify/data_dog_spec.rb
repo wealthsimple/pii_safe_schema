@@ -4,7 +4,7 @@ describe PiiSafeSchema::Notify::DataDog do
   describe '.deliver' do
     subject(:deliver) { described_class.deliver(pii_column) }
 
-    let(:datadog_client) { instance_double('DatadogClient') }
+    let(:datadog_client) { instance_double(Datadog::Statsd) }
     let(:env) { 'production' }
 
     before do
@@ -28,7 +28,7 @@ describe PiiSafeSchema::Notify::DataDog do
       let(:datadog_client) { nil }
 
       it 'does nothing' do
-        expect(deliver).to eq(nil)
+        expect(deliver).to be_nil
       end
     end
 

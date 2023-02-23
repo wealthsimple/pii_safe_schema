@@ -16,7 +16,7 @@ module PiiSafeSchema
         generated_lines = generate_migration_lines(table, columns)
         migration_file = generator.create_migration_file
         file_lines = File.read(migration_file).split("\n")
-        change_line = file_lines.find_index { |i| /def change/.match(i) }
+        change_line = file_lines.find_index { |i| i.include?('def change') }
         new_contents = file_lines[0..change_line] + generated_lines + file_lines[change_line + 1..]
 
         File.open(migration_file, 'w') do |f|
@@ -28,9 +28,9 @@ module PiiSafeSchema
 
       def generate_migration_lines(table, columns)
         migration_lines = columns.map do |c|
-          "#{' ' * (safety_assured? ? 6 : 4)}"\
-            "change_column :#{table}, :#{c.column.name}, :#{c.column.type}, "\
-            "comment: \'#{c.suggestion.to_json}\'"\
+          "#{' ' * (safety_assured? ? 6 : 4)}" \
+            "change_column :#{table}, :#{c.column.name}, :#{c.column.type}, " \
+            "comment: \'#{c.suggestion.to_json}\'" \
         end
         wrap_in_safety_assured(migration_lines)
       end

@@ -15,7 +15,7 @@ describe PiiSafeSchema::Annotations do
     context 'when invalid annotation' do
       let(:annotation_type) { :foobar }
 
-      it { expect(comment).to eq(nil) }
+      it { expect(comment).to be_nil }
     end
   end
 end
