@@ -31,14 +31,13 @@ jobs:
           ruby-version: ${{ matrix.ruby-version }}
 
       - name: Lint
-        uses: wealthsimple/toolbox-script@v1
-        with:
-          script: toolbox.ruby.lint.run();
+        run: |
+          bundle exec rubocop
+          bundle exec bundle-audit update
+          bundle exec bundle-audit check
 
       - name: Test
-        uses: wealthsimple/toolbox-script@v1
-        with:
-          script: toolbox.ruby.test.run();
+        run: bundle exec rspec
 
   publish:
     name: Publish package

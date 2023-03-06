@@ -5,7 +5,7 @@ require 'logger'
 
 describe PiiSafeSchema do
   it 'has a version number' do
-    expect(PiiSafeSchema::VERSION).not_to be nil
+    expect(PiiSafeSchema::VERSION).not_to be_nil
   end
 
   it 'has version been bumped' do
@@ -104,7 +104,7 @@ describe PiiSafeSchema do
         expect(described_class).to have_received(:print_help!)
       end
 
-      it { expect(parse_additional_columns).to eq(nil) }
+      it { expect(parse_additional_columns).to be_nil }
     end
 
     context 'when no args' do
@@ -169,7 +169,7 @@ describe PiiSafeSchema do
           expect(described_class).to have_received(:print_help!)
         end
 
-        it { expect(parse_additional_columns).to eq(nil) }
+        it { expect(parse_additional_columns).to be_nil }
       end
     end
   end

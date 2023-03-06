@@ -189,7 +189,7 @@ describe PiiSafeSchema::PiiColumn do
         allow(described_class).to receive(:apply_recommendation?).and_return(false)
       end
 
-      it { expect(recommended_comment).to eq(nil) }
+      it { expect(recommended_comment).to be_nil }
     end
   end
 
@@ -210,19 +210,19 @@ describe PiiSafeSchema::PiiColumn do
     context 'when matching name' do
       let(:column_name) { 'postal_code' }
 
-      it { expect(apply_recommendation).to eq(true) }
+      it { expect(apply_recommendation).to be(true) }
 
       context 'when contains /encrypted/' do
         let(:column_name) { 'encrypted_postal_code' }
 
-        it { expect(apply_recommendation).to eq(false) }
+        it { expect(apply_recommendation).to be(false) }
       end
     end
 
     context 'when not matching name' do
       let(:column_name) { 'banana' }
 
-      it { expect(apply_recommendation).to eq(false) }
+      it { expect(apply_recommendation).to be(false) }
     end
   end
 
@@ -234,37 +234,37 @@ describe PiiSafeSchema::PiiColumn do
     context 'when column name "foobar"' do
       let(:column_name) { 'foobar' }
 
-      it { expect(encrypted).to eq(false) }
+      it { expect(encrypted).to be(false) }
     end
 
     context 'when column name "postal_code"' do
       let(:column_name) { 'postal_code' }
 
-      it { expect(encrypted).to eq(false) }
+      it { expect(encrypted).to be(false) }
     end
 
     context 'when column name "encrypted"' do
       let(:column_name) { 'encrypted' }
 
-      it { expect(encrypted).to eq(true) }
+      it { expect(encrypted).to be(true) }
     end
 
     context 'when column name "encrypted_foobar"' do
       let(:column_name) { 'encrypted_foobar' }
 
-      it { expect(encrypted).to eq(true) }
+      it { expect(encrypted).to be(true) }
     end
 
     context 'when column name "foobar_encrypted"' do
       let(:column_name) { 'foobar_encrypted' }
 
-      it { expect(encrypted).to eq(true) }
+      it { expect(encrypted).to be(true) }
     end
 
     context 'when column name "foo_encrypted_bar"' do
       let(:column_name) { 'foo_encrypted_bar' }
 
-      it { expect(encrypted).to eq(true) }
+      it { expect(encrypted).to be(true) }
     end
   end
 
@@ -292,20 +292,20 @@ describe PiiSafeSchema::PiiColumn do
       context 'when comment matches' do
         let(:column_comment) { annotations[:encrypted_data][:comment].to_json }
 
-        it { expect(apply_encrypted_recommendation).to eq(false) }
+        it { expect(apply_encrypted_recommendation).to be(false) }
       end
 
       context 'when comment doesnt match' do
         let(:column_comment) { 'foobar' }
 
-        it { expect(apply_encrypted_recommendation).to eq(true) }
+        it { expect(apply_encrypted_recommendation).to be(true) }
       end
     end
 
     context 'when encrypted? false' do
       before { allow(described_class).to receive(:encrypted?).and_return(false) }
 
-      it { expect(apply_encrypted_recommendation).to eq(false) }
+      it { expect(apply_encrypted_recommendation).to be(false) }
 
       it do
         apply_encrypted_recommendation

@@ -3,22 +3,22 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'pii_safe_schema/version'
 
 Gem::Specification.new do |s|
-  s.name          = 'pii_safe_schema'
-  s.version       = PiiSafeSchema::VERSION
-  s.authors       = ['Alexi Garrow']
-  s.email         = ['agarrow@wealthsimple.com']
+  s.name = 'pii_safe_schema'
+  s.version = PiiSafeSchema::VERSION
+  s.authors = ['Alexi Garrow']
+  s.email = ['agarrow@wealthsimple.com']
 
-  s.summary       = 'Schema migration tool for checking and adding comments on PII columns.'
-  s.homepage      = 'https://github.com/wealthsimple/pii_safe_schema'
-  s.license       = "MIT"
+  s.summary = 'Schema migration tool for checking and adding comments on PII columns.'
+  s.homepage = 'https://github.com/wealthsimple/pii_safe_schema'
+  s.license = "MIT"
   s.required_ruby_version = Gem::Requirement.new(">= 2.6")
 
   s.files = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})
   end
 
-  s.bindir        = 'exe'
-  s.executables   = s.files.grep(%r{^exe/}) { |f| File.basename(f) }
+  s.bindir = 'exe'
+  s.executables = s.files.grep(%r{^exe/}) { |f| File.basename(f) }
   s.require_paths = ['lib']
 
   s.add_dependency 'colorize'
