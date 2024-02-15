@@ -3,6 +3,9 @@
 
 Schema migration tool for checking and adding comments on *Personally Identifiable Information* (PII) columns in Rails.
 
+Maintained by the [Application Security & Posture Management Team](https://github.com/orgs/wealthsimple/teams/appsec-posture).
+You can find us on slack at [#appsec-posture](https://wealthsimple.slack.com/archives/C05AZ5R23PH)
+
 Specifically, this gem serves a few functions:
 
 * Warning you when you might be missing an annotation on a column
