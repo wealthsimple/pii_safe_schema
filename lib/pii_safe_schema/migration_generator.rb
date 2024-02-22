@@ -30,7 +30,7 @@ module PiiSafeSchema
         migration_lines = columns.map do |c|
           "#{' ' * (safety_assured? ? 6 : 4)}" \
             "change_column :#{table}, :#{c.column.name}, :#{c.column.type}, " \
-            "comment: \'#{c.suggestion.to_json}\'" \
+            "comment: '#{c.suggestion.to_json}'" \
         end
         wrap_in_safety_assured(migration_lines)
       end
