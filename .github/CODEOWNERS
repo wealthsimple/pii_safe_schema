@@ -1,2 +1,2 @@
-* @wealthsimple/appsec-posture
-.github/workflows/* @wealthsimple/developer-tools @wealthsimple/appsec-posture
+* @wealthsimple/developer-tools
+.github/workflows/* @wealthsimple/developer-tools
