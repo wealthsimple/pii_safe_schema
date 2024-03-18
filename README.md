@@ -1,5 +1,5 @@
 > [!CAUTION]
-> **pii_safe_schema** is being deprecated. We use Satori to perform data masking for our database schemas.
+> **pii_safe_schema** is deprecated. We use Satori to perform data masking for our database schemas.
 
 # PII Safe Schema
 ![CI](https://github.com/wealthsimple/pii_safe_schema/actions/workflows/default.yml/badge.svg)
